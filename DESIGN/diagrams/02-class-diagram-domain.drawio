@@ -1,0 +1,346 @@
+<mxfile host="app.diagrams.net" version="24.7.17" type="device">
+  <diagram id="nexusenroll-domain" name="Class Diagram — Business Tier Domain Model">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="NexusEnroll — Business Logic Tier: Domain Model&lt;br&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;Primary business objects and their relationships. Presentation and data-access tiers excluded per Part B4.&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="1560" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bandPeople" value="USER MANAGEMENT CONTEXT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;dashed=1;verticalAlign=top;align=center;spacingTop=4;fontSize=10;fontStyle=1;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="30" y="75" width="300" height="700" as="geometry" />
+        </mxCell>
+        <mxCell id="bandCourse" value="COURSE CATALOGUE CONTEXT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;dashed=1;verticalAlign=top;align=center;spacingTop=4;fontSize=10;fontStyle=1;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="390" y="75" width="310" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="bandEnrol" value="ENROLMENT CONTEXT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;dashed=1;verticalAlign=top;align=center;spacingTop=4;fontSize=10;fontStyle=1;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="750" y="75" width="320" height="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="bandRecords" value="ACADEMIC RECORDS CONTEXT" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b3b3b3;dashed=1;verticalAlign=top;align=center;spacingTop=4;fontSize=10;fontStyle=1;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="75" width="320" height="1060" as="geometry" />
+        </mxCell>
+
+        <mxCell id="Person" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«abstract»&lt;/i&gt;&lt;br&gt;&lt;b&gt;&lt;i&gt;Person&lt;/i&gt;&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- personId: String&lt;br&gt;- firstName: String&lt;br&gt;- lastName: String&lt;br&gt;- email: String&lt;br&gt;- phone: String&lt;br&gt;- isActive: bool&lt;hr size=&quot;1&quot;&gt;+ getFullName(): String&lt;br&gt;+ getContactInfo(): Contact&lt;br&gt;+ deactivate(): void&lt;br&gt;&lt;i&gt;+ getRole(): Role {abstract}&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="110" width="270" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Student" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;Student&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- studentId: String&lt;br&gt;- enrolmentYear: int&lt;br&gt;- standing: AcademicStanding&lt;hr size=&quot;1&quot;&gt;+ getRole(): Role&lt;br&gt;+ getAdvisor(): Faculty&lt;br&gt;+ getSchedule(): StudentSchedule&lt;br&gt;+ getCompletedCourses(): List" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="370" width="270" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="Faculty" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;Faculty&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- facultyId: String&lt;br&gt;- department: String&lt;br&gt;- title: String&lt;hr size=&quot;1&quot;&gt;+ getRole(): Role&lt;br&gt;+ getAssignedSections(): List&lt;br&gt;+ getAdvisees(): List&lt;br&gt;+ getWorkloadCredits(): int" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="545" width="270" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="Administrator" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;Administrator&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- adminId: String&lt;br&gt;- permissions: Set&lt;hr size=&quot;1&quot;&gt;+ getRole(): Role&lt;br&gt;+ canOverrideEnrolment(): bool" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="45" y="670" width="270" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="Course" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;Course&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- courseCode: String&lt;br&gt;- title: String&lt;br&gt;- description: String&lt;br&gt;- credits: int&lt;br&gt;- department: String&lt;hr size=&quot;1&quot;&gt;+ getPrerequisites(): List&lt;br&gt;+ addPrerequisite(p): void&lt;br&gt;+ updateDescription(d): void" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="405" y="110" width="280" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="Prerequisite" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;Prerequisite&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- requiredCourseCode: String&lt;br&gt;- minimumGrade: String&lt;hr size=&quot;1&quot;&gt;+ isSatisfiedBy(record): bool" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="405" y="330" width="280" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="CourseSection" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;CourseSection&lt;/b&gt;&lt;br&gt;&lt;i&gt;a course offering in one semester&lt;/i&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- sectionId: String&lt;br&gt;- semester: Semester&lt;br&gt;- totalCapacity: int&lt;br&gt;- enrolledCount: int&lt;hr size=&quot;1&quot;&gt;+ availableSeats(): int&lt;br&gt;+ hasAvailableSeat(): bool&lt;br&gt;+ occupancyRate(): float&lt;br&gt;+ reserveSeat(): void&lt;br&gt;+ releaseSeat(): void&lt;br&gt;+ changeCapacity(n): void" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="405" y="455" width="280" height="215" as="geometry" />
+        </mxCell>
+        <mxCell id="TimeSlot" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;TimeSlot&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- dayOfWeek: DayOfWeek&lt;br&gt;- startTime: Time&lt;br&gt;- endTime: Time&lt;br&gt;- location: String&lt;hr size=&quot;1&quot;&gt;+ overlaps(other): bool" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="405" y="710" width="280" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="DegreeProgram" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;DegreeProgram&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- programId: String&lt;br&gt;- name: String&lt;br&gt;- requiredCredits: int&lt;hr size=&quot;1&quot;&gt;+ getRequiredCourses(): List&lt;br&gt;+ remainingFor(record): List" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="405" y="855" width="280" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="EnrollmentRequest" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;EnrollmentRequest&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- studentId: String&lt;br&gt;- sectionId: String&lt;br&gt;- isAdminOverride: bool&lt;hr size=&quot;1&quot;&gt;+ isOverride(): bool" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="765" y="110" width="290" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="ValidationResult" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;ValidationResult&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- errors: List&amp;lt;String&amp;gt;&lt;hr size=&quot;1&quot;&gt;+ isValid(): bool&lt;br&gt;+ addError(msg): void&lt;br&gt;+ merge(other): void" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="765" y="250" width="290" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="Enrollment" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;Enrollment&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- enrollmentId: String&lt;br&gt;- studentId: String&lt;br&gt;- sectionId: String&lt;br&gt;- enrolledOn: DateTime&lt;br&gt;- status: EnrollmentStatus&lt;hr size=&quot;1&quot;&gt;+ confirm(): void&lt;br&gt;+ drop(): void&lt;br&gt;+ waitlist(): void&lt;br&gt;+ isActive(): bool" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="765" y="390" width="290" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="EnrollmentStatus" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«enumeration»&lt;/i&gt;&lt;br&gt;&lt;b&gt;EnrollmentStatus&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;PENDING&lt;br&gt;ENROLLED&lt;br&gt;WAITLISTED&lt;br&gt;DROPPED&lt;br&gt;COMPLETED" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="765" y="610" width="290" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="StudentSchedule" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;StudentSchedule&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- studentId: String&lt;br&gt;- semester: Semester&lt;hr size=&quot;1&quot;&gt;+ addSection(s): void&lt;br&gt;+ removeSection(s): void&lt;br&gt;+ hasConflictWith(slots): bool&lt;br&gt;+ totalCredits(): int&lt;br&gt;+ asCalendarView(): Calendar" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="765" y="775" width="290" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="Waitlist" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;Waitlist&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- sectionId: String&lt;br&gt;- queue: List&amp;lt;String&amp;gt;&lt;hr size=&quot;1&quot;&gt;+ add(studentId): int&lt;br&gt;+ popNext(): String&lt;br&gt;+ positionOf(studentId): int&lt;br&gt;+ isEmpty(): bool" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="765" y="960" width="290" height="140" as="geometry" />
+        </mxCell>
+
+        <mxCell id="AcademicRecord" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;AcademicRecord&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- studentId: String&lt;br&gt;- programId: String&lt;hr size=&quot;1&quot;&gt;+ addGrade(g): void&lt;br&gt;+ getCompletedCourses(): List&lt;br&gt;+ hasCompleted(code, min): bool&lt;br&gt;+ earnedCredits(): int&lt;br&gt;+ calculateGpa(): float" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1135" y="110" width="290" height="155" as="geometry" />
+        </mxCell>
+        <mxCell id="Grade" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;Grade&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- studentId: String&lt;br&gt;- courseCode: String&lt;br&gt;- letterGrade: String&lt;br&gt;- gradePoints: float&lt;br&gt;- semester: Semester&lt;hr size=&quot;1&quot;&gt;+ isPassing(): bool&lt;br&gt;+ isValidLetter(): bool" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1135" y="305" width="290" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="GradeSubmission" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;GradeSubmission&lt;/b&gt;&lt;br&gt;&lt;i&gt;lifecycle modelled by «State»&lt;/i&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- submissionId: String&lt;br&gt;- sectionId: String&lt;br&gt;- facultyId: String&lt;br&gt;- state: GradeState&lt;br&gt;- rejectedEntries: List&lt;hr size=&quot;1&quot;&gt;+ addEntry(grade): void&lt;br&gt;+ submitForApproval(): void&lt;br&gt;+ approve(): void&lt;br&gt;+ reject(reason): void&lt;br&gt;+ correctEntry(g): void" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1135" y="505" width="290" height="215" as="geometry" />
+        </mxCell>
+        <mxCell id="ProgressTracker" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;ProgressTracker&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ remainingCourses(rec, prog): List&lt;br&gt;+ percentComplete(rec, prog): float&lt;br&gt;+ creditsOutstanding(): int" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#000000;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1135" y="760" width="290" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="CourseChangeRequest" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;CourseChangeRequest&lt;/b&gt;&lt;br&gt;&lt;i&gt;lifecycle modelled by «State»&lt;/i&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- requestId: String&lt;br&gt;- sectionId: String&lt;br&gt;- requestedBy: String&lt;br&gt;- changeType: ChangeType&lt;br&gt;- payload: Map&lt;br&gt;- state: RequestState&lt;hr size=&quot;1&quot;&gt;+ submit(): void&lt;br&gt;+ approve(adminId): void&lt;br&gt;+ reject(reason): void" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1135" y="890" width="290" height="215" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gStudent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Student" target="Person">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="gFaculty" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;exitX=0;exitY=0.2;exitDx=0;exitDy=0;entryX=0;entryY=0.9;entryDx=0;entryDy=0;" edge="1" parent="1" source="Faculty" target="Person">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="20" y="574" />
+              <mxPoint x="20" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gAdmin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;exitX=1;exitY=0.2;exitDx=0;exitDy=0;entryX=1;entryY=0.9;entryDx=0;entryDy=0;" edge="1" parent="1" source="Administrator" target="Person">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="345" y="689" />
+              <mxPoint x="345" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="aCourseSection" value="offers" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=0;startSize=12;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Course" target="CourseSection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aCourseSectionM1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aCourseSection">
+          <mxGeometry x="-0.75" relative="1" as="geometry"><mxPoint x="-10" as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="aCourseSectionM2" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aCourseSection">
+          <mxGeometry x="0.75" relative="1" as="geometry"><mxPoint x="-14" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aCoursePrereq" value="requires" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=1;startSize=12;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Course" target="Prerequisite">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aCoursePrereqM" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aCoursePrereq">
+          <mxGeometry x="0.7" relative="1" as="geometry"><mxPoint x="16" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aSectionSlot" value="scheduled at" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=1;startSize=12;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="CourseSection" target="TimeSlot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aSectionSlotM" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aSectionSlot">
+          <mxGeometry x="0.6" relative="1" as="geometry"><mxPoint x="16" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aProgCourse" value="requires" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="DegreeProgram" target="Course">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="378" y="910" />
+              <mxPoint x="378" y="241" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aProgCourseM" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aProgCourse">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint y="-12" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aStudentProg" value="enrolled in" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Student" target="DegreeProgram">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="910" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aStudentProgM1" value="*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aStudentProg">
+          <mxGeometry x="-0.85" relative="1" as="geometry"><mxPoint x="12" as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="aStudentProgM2" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aStudentProg">
+          <mxGeometry x="0.85" relative="1" as="geometry"><mxPoint y="-12" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aFacultySection" value="teaches" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Faculty" target="CourseSection">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aFacultySectionM1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aFacultySection">
+          <mxGeometry x="-0.8" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="aFacultySectionM2" value="*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aFacultySection">
+          <mxGeometry x="0.8" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aAdvises" value="advises" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Faculty" target="Student">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aAdvisesM1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aAdvises">
+          <mxGeometry x="-0.6" relative="1" as="geometry"><mxPoint x="10" as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="aAdvisesM2" value="*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aAdvises">
+          <mxGeometry x="0.6" relative="1" as="geometry"><mxPoint x="10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aStudentEnrol" value="holds" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=0;startSize=12;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Student" target="Enrollment">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="443" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aStudentEnrolM1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aStudentEnrol">
+          <mxGeometry x="-0.9" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="aStudentEnrolM2" value="*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aStudentEnrol">
+          <mxGeometry x="0.9" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aSectionEnrol" value="records" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="CourseSection" target="Enrollment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aSectionEnrolM1" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aSectionEnrol">
+          <mxGeometry x="-0.8" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+        <mxCell id="aSectionEnrolM2" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aSectionEnrol">
+          <mxGeometry x="0.8" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aEnrolStatus" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Enrollment" target="EnrollmentStatus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="aStudentSched" value="owns" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=1;startSize=12;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Student" target="StudentSchedule">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="850" />
+              <mxPoint x="730" y="850" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aStudentSchedM" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aStudentSched">
+          <mxGeometry x="0.9" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aSchedSection" value="displays" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="StudentSchedule" target="CourseSection">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="813" />
+              <mxPoint x="720" y="690" />
+              <mxPoint x="545" y="690" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="aSectionWaitlist" value="has" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=1;startSize=12;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="CourseSection" target="Waitlist">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="545" y="1030" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aSectionWaitlistM" value="0..1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aSectionWaitlist">
+          <mxGeometry x="0.9" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aStudentRecord" value="has" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=1;startSize=12;exitX=1;exitY=0.1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Student" target="AcademicRecord">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="385" />
+              <mxPoint x="360" y="90" />
+              <mxPoint x="1105" y="90" />
+              <mxPoint x="1105" y="188" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aStudentRecordM" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aStudentRecord">
+          <mxGeometry x="0.9" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aRecordGrade" value="contains" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=1;startSize=12;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="AcademicRecord" target="Grade">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aRecordGradeM" value="0..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aRecordGrade">
+          <mxGeometry x="0.6" relative="1" as="geometry"><mxPoint x="16" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aSubmissionGrade" value="batches" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=0;startSize=12;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="GradeSubmission" target="Grade">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aSubmissionGradeM" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;" vertex="1" connectable="0" parent="aSubmissionGrade">
+          <mxGeometry x="0.6" relative="1" as="geometry"><mxPoint x="18" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="aFacultySubmission" value="submits" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Faculty" target="GradeSubmission">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="720" y="668" />
+              <mxPoint x="720" y="613" />
+              <mxPoint x="1105" y="613" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="aFacultyChange" value="raises" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Faculty" target="CourseChangeRequest">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="1140" />
+              <mxPoint x="1105" y="1140" />
+              <mxPoint x="1105" y="998" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="aAdminChange" value="approves" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="Administrator" target="CourseChangeRequest">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1095" y="718" />
+              <mxPoint x="1095" y="944" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="aProgressUses" value="&amp;laquo;uses&amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="ProgressTracker" target="GradeSubmission">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="aProgressProg" value="&amp;laquo;uses&amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;" edge="1" parent="1" source="ProgressTracker" target="DegreeProgram">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1100" y="805" />
+              <mxPoint x="1100" y="1120" />
+              <mxPoint x="740" y="1120" />
+              <mxPoint x="740" y="910" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="legend" value="UML Notation Legend" style="swimlane;whiteSpace=wrap;html=1;startSize=26;fillColor=#ffffff;strokeColor=#666666;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="45" y="800" width="300" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="lgA" value="───▷   Generalisation (inheritance)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="30" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lgB" value="◆───   Composition (part cannot exist alone)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="52" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lgC" value="◇───   Aggregation (part may exist alone)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="74" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lgD" value="───→   Association (directed)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="96" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lgE" value="- - -→   Dependency («uses»)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="118" width="280" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="lgF" value="Purple fill = object whose lifecycle is modelled&lt;br&gt;by a State Diagram (see diagram 06)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;fontColor=#9673a6;" vertex="1" parent="legend">
+          <mxGeometry x="10" y="142" width="280" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note1" value="&lt;b&gt;Design note — Composition over Inheritance.&lt;/b&gt;&lt;br&gt;A CourseSection &lt;i&gt;composes&lt;/i&gt; TimeSlot objects rather than&lt;br&gt;subclassing a &quot;ScheduledThing&quot; base. Adding a second&lt;br&gt;weekly meeting is a data change, not a class change.&lt;br&gt;&lt;br&gt;&lt;b&gt;Design note — Encapsulation.&lt;/b&gt;&lt;br&gt;CourseSection.enrolledCount is private; capacity is only&lt;br&gt;mutated via reserveSeat() / releaseSeat(), so the&lt;br&gt;invariant enrolledCount ≤ totalCapacity cannot be broken&lt;br&gt;from outside the object." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="110" width="330" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="note2" value="&lt;b&gt;Design note — the transaction boundary.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Enrollment, CourseSection.enrolledCount and&lt;br&gt;StudentSchedule are the three pieces of state the brief&lt;br&gt;requires to change atomically:&lt;br&gt;&lt;br&gt;&lt;i&gt;&quot;either the entire operation succeeds (the student is&lt;br&gt;enrolled, the class capacity is updated, and the schedule&lt;br&gt;is modified) or the entire operation fails&quot;&lt;/i&gt;&lt;br&gt;&lt;br&gt;All three live inside the Enrolment Service's bounded&lt;br&gt;context, making this a &lt;b&gt;single local ACID transaction&lt;/b&gt; —&lt;br&gt;no distributed transaction or Saga required." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="310" width="330" height="215" as="geometry" />
+        </mxCell>
+        <mxCell id="note3" value="&lt;b&gt;Note.&lt;/b&gt; Pattern participants (validators, commands,&lt;br&gt;observers, factories, facades, state classes) are shown&lt;br&gt;on &lt;b&gt;diagram 03 — Design Pattern Structures&lt;/b&gt; to keep&lt;br&gt;this domain model readable. The two diagrams share&lt;br&gt;class names and are intended to be read together." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1460" y="550" width="330" height="100" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
