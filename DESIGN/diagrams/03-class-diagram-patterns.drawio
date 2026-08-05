@@ -1,0 +1,293 @@
+<mxfile host="app.diagrams.net" version="24.7.17" type="device">
+  <diagram id="nexusenroll-patterns" name="Class Diagram — Design Pattern Structures">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="2339" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="NexusEnroll — Design Pattern Structures in the Business Logic Tier&lt;br&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;Seven patterns across all three GoF families. Each zone names the pattern, its GoF roles, and the specific requirement it satisfies. The final panel records the patterns we considered and rejected, and why.&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="1520" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ============ STRATEGY ============ -->
+        <mxCell id="zStrategy" value="① STRATEGY  «Behavioural»  —  Enrolment validation rules&lt;br&gt;&lt;font style=&quot;font-size: 10px;font-weight:normal&quot;&gt;&lt;i&gt;Requirement: &quot;The system must validate all enrolment requests&quot; — prerequisite, capacity and time-conflict checks.&lt;br&gt;Why: each rule is an interchangeable algorithm. A new rule (e.g. credit-limit) is a new class, with &lt;b&gt;no change&lt;/b&gt; to the validator — Open/Closed Principle.&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f2f8f0;strokeColor=#82b366;dashed=1;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;fontColor=#3d6b2e;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="740" height="450" as="geometry" />
+        </mxCell>
+        <mxCell id="ValidationRule" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«interface»  — Strategy&lt;/i&gt;&lt;br&gt;&lt;b&gt;ValidationRule&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ validate(req: EnrollmentRequest,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;ctx: EnrolmentContext): ValidationResult&lt;br&gt;+ ruleName(): String" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="250" y="180" width="320" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="PrerequisiteRule" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteStrategy&lt;/i&gt;&lt;br&gt;&lt;b&gt;PrerequisiteRule&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- recordRepo: IRecordRepository&lt;hr size=&quot;1&quot;&gt;+ validate(req, ctx)&lt;br&gt;+ ruleName()&lt;hr size=&quot;1&quot;&gt;&lt;i&gt;Student must have completed&lt;br&gt;all prerequisites&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="300" width="225" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="CapacityRule" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteStrategy&lt;/i&gt;&lt;br&gt;&lt;b&gt;CapacityRule&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- sectionRepo: ISectionRepository&lt;hr size=&quot;1&quot;&gt;+ validate(req, ctx)&lt;br&gt;+ ruleName()&lt;hr size=&quot;1&quot;&gt;&lt;i&gt;The course cannot be full&lt;br&gt;(bypassed on admin override)&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="300" y="300" width="220" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="TimeConflictRule" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteStrategy&lt;/i&gt;&lt;br&gt;&lt;b&gt;TimeConflictRule&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- scheduleRepo: IScheduleRepository&lt;hr size=&quot;1&quot;&gt;+ validate(req, ctx)&lt;br&gt;+ ruleName()&lt;hr size=&quot;1&quot;&gt;&lt;i&gt;Must not overlap an&lt;br&gt;already-enrolled course&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="535" y="300" width="225" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="EnrollmentValidator" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;Context&lt;/i&gt;&lt;br&gt;&lt;b&gt;EnrollmentValidator&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- rules: List&amp;lt;ValidationRule&amp;gt;&lt;hr size=&quot;1&quot;&gt;+ addRule(r: ValidationRule): void&lt;br&gt;+ validateAll(req): ValidationResult&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;iterates rules; aggregates every failure so the&lt;br&gt;student sees all problems at once, not just the first&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="250" y="450" width="320" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="sImpl1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.15;entryY=1;entryDx=0;entryDy=0;strokeColor=#82b366;" edge="1" parent="1" source="PrerequisiteRule" target="ValidationRule">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sImpl2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#82b366;" edge="1" parent="1" source="CapacityRule" target="ValidationRule">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sImpl3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.85;entryY=1;entryDx=0;entryDy=0;strokeColor=#82b366;" edge="1" parent="1" source="TimeConflictRule" target="ValidationRule">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sAgg" value="1     1..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=diamondThin;startFill=0;startSize=12;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#82b366;fontSize=10;" edge="1" parent="1" source="EnrollmentValidator" target="ValidationRule">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ COMMAND ============ -->
+        <mxCell id="zCommand" value="② COMMAND  «Behavioural»  —  Transactional add / drop&lt;br&gt;&lt;font style=&quot;font-size: 10px;font-weight:normal&quot;&gt;&lt;i&gt;Requirement: &quot;either the entire operation succeeds… or the entire operation fails, leaving no partial state changes.&quot;&lt;br&gt;Why: encapsulating each operation as an object with execute()/undo() gives a natural rollback path. The invoker unwinds completed steps in reverse on any failure.&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f2f6fb;strokeColor=#6c8ebf;dashed=1;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;fontColor=#2d5580;" vertex="1" parent="1">
+          <mxGeometry x="820" y="90" width="740" height="450" as="geometry" />
+        </mxCell>
+        <mxCell id="EnrollmentCommand" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«interface»  — Command&lt;/i&gt;&lt;br&gt;&lt;b&gt;EnrollmentCommand&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ execute(): void&lt;br&gt;+ undo(): void&lt;br&gt;+ describe(): String" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="175" width="320" height="88" as="geometry" />
+        </mxCell>
+        <mxCell id="AddCourseCommand" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteCommand&lt;/i&gt;&lt;br&gt;&lt;b&gt;AddCourseCommand&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- request: EnrollmentRequest&lt;br&gt;- receiver: EnrolmentReceiver&lt;br&gt;- createdEnrolmentId: String&lt;hr size=&quot;1&quot;&gt;+ execute()&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&amp;nbsp;&amp;nbsp;1. create Enrollment&lt;br&gt;&amp;nbsp;&amp;nbsp;2. section.reserveSeat()&lt;br&gt;&amp;nbsp;&amp;nbsp;3. schedule.addSection()&lt;/font&gt;&lt;br&gt;+ undo()&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&amp;nbsp;&amp;nbsp;reverses 3 → 2 → 1&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="845" y="278" width="330" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="DropCourseCommand" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteCommand&lt;/i&gt;&lt;br&gt;&lt;b&gt;DropCourseCommand&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- enrolmentId: String&lt;br&gt;- receiver: EnrolmentReceiver&lt;br&gt;- snapshot: EnrolmentSnapshot&lt;hr size=&quot;1&quot;&gt;+ execute()&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&amp;nbsp;&amp;nbsp;1. enrolment.drop()&lt;br&gt;&amp;nbsp;&amp;nbsp;2. section.releaseSeat()&lt;br&gt;&amp;nbsp;&amp;nbsp;3. schedule.removeSection()&lt;/font&gt;&lt;br&gt;+ undo()  &lt;font style=&quot;font-size:9px&quot;&gt;restores snapshot&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;no events published here — StudentDropped and&lt;br&gt;SeatReleased are published by the Facade after commit&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1195" y="278" width="340" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="TransactionManager" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;Invoker&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;b&gt;TransactionManager&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- executed: Stack&amp;lt;EnrollmentCommand&amp;gt;&lt;hr size=&quot;1&quot;&gt;+ runAtomic(cmds: List): TxResult&amp;nbsp;&amp;nbsp;&amp;nbsp;- rollbackAll(): void&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;on failure, pops the stack calling undo() on every already-&lt;br&gt;executed command — no partial state change survives&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="448" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="cInvoke" value="invokes  1..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#6c8ebf;fontSize=10;" edge="1" parent="1" source="TransactionManager" target="EnrollmentCommand">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1190" y="443" />
+              <mxPoint x="1185" y="443" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cImpl1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;strokeColor=#6c8ebf;" edge="1" parent="1" source="AddCourseCommand" target="EnrollmentCommand">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cImpl2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;strokeColor=#6c8ebf;" edge="1" parent="1" source="DropCourseCommand" target="EnrollmentCommand">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ STATE ============ -->
+        <mxCell id="zState" value="③ STATE  «Behavioural»  —  Grade submission lifecycle&lt;br&gt;&lt;font style=&quot;font-size: 10px;font-weight:normal&quot;&gt;&lt;i&gt;Requirement: &quot;The system must have a process for grade approval (e.g. a &amp;quot;Pending&amp;quot; state before a final &amp;quot;Submitted&amp;quot; state).&quot;&lt;br&gt;Why: behaviour depends entirely on the current state. State classes replace a sprawling if/elif chain, and each class enforces which transitions are legal.&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f7f3f9;strokeColor=#9673a6;dashed=1;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;fontColor=#66497a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="570" width="740" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="GradeState" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«interface»  — State&lt;/i&gt;&lt;br&gt;&lt;b&gt;GradeState&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ addEntry(ctx, grade): void&lt;br&gt;+ submitForApproval(ctx): void&lt;br&gt;+ approve(ctx): void&lt;br&gt;+ reject(ctx, reason): void&lt;br&gt;+ correctEntry(ctx, grade): void&lt;br&gt;+ name(): String&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;default implementations raise IllegalTransition&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="235" y="655" width="350" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="DraftState" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteState&lt;/i&gt;&lt;br&gt;&lt;b&gt;DraftState&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ addEntry ✔&lt;br&gt;+ submitForApproval ✔&lt;br&gt;+ approve ✘&lt;br&gt;+ reject ✘" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="55" y="815" width="165" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="PendingApprovalState" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteState&lt;/i&gt;&lt;br&gt;&lt;b&gt;PendingApprovalState&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ approve ✔&lt;br&gt;+ reject ✔&lt;br&gt;+ addEntry ✘&lt;br&gt;+ submitForApproval ✘" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="232" y="815" width="175" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="PartiallyRejectedState" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteState&lt;/i&gt;&lt;br&gt;&lt;b&gt;PartiallyRejectedState&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ correctEntry ✔&lt;br&gt;+ submitForApproval ✔&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;valid grades already accepted&lt;br&gt;are retained&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="419" y="815" width="175" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="SubmittedState" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteState&lt;/i&gt;&lt;br&gt;&lt;b&gt;SubmittedState&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;i&gt;terminal&lt;/i&gt;&lt;br&gt;all transitions ✘&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;academic records updated&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="606" y="815" width="155" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="GradeSubmissionCtx" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;Context&lt;/i&gt;&lt;br&gt;&lt;b&gt;GradeSubmission&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- state: GradeState&lt;br&gt;- entries: List&amp;lt;Grade&amp;gt;&lt;hr size=&quot;1&quot;&gt;+ submitForApproval()&amp;nbsp;&lt;font style=&quot;font-size:9px&quot;&gt;→ state.submitForApproval(this)&lt;/font&gt;&lt;br&gt;+ approve()&amp;nbsp;&lt;font style=&quot;font-size:9px&quot;&gt;→ state.approve(this)&lt;/font&gt;&lt;br&gt;+ setState(s: GradeState): void" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="235" y="940" width="350" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="stImpl1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.1;entryY=1;entryDx=0;entryDy=0;strokeColor=#9673a6;" edge="1" parent="1" source="DraftState" target="GradeState">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="stImpl2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.37;entryY=1;entryDx=0;entryDy=0;strokeColor=#9673a6;" edge="1" parent="1" source="PendingApprovalState" target="GradeState">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="stImpl3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.63;entryY=1;entryDx=0;entryDy=0;strokeColor=#9673a6;" edge="1" parent="1" source="PartiallyRejectedState" target="GradeState">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="stImpl4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.9;entryY=1;entryDx=0;entryDy=0;strokeColor=#9673a6;" edge="1" parent="1" source="SubmittedState" target="GradeState">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="stCtx" value="- state    1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0.85;exitY=0;exitDx=0;exitDy=0;entryX=0.85;entryY=1;entryDx=0;entryDy=0;strokeColor=#9673a6;fontSize=10;" edge="1" parent="1" source="GradeSubmissionCtx" target="GradeState">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ OBSERVER ============ -->
+        <mxCell id="zObserver" value="④ OBSERVER  «Behavioural»  —  Notification system&lt;br&gt;&lt;font style=&quot;font-size: 10px;font-weight:normal&quot;&gt;&lt;i&gt;Requirement: &quot;This process should be automated and &lt;b&gt;decoupled&lt;/b&gt; from the core enrolment logic.&quot;&lt;br&gt;Why: the subject publishes an event and knows nothing about who consumes it. Adding a recipient is a new observer class with zero change to enrolment code.&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fefaef;strokeColor=#d6b656;dashed=1;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;fontColor=#8a6d1f;" vertex="1" parent="1">
+          <mxGeometry x="820" y="570" width="740" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="NotificationPublisher" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;Subject&lt;/i&gt;&lt;br&gt;&lt;b&gt;NotificationPublisher&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- observers: Map&amp;lt;EventType, List&amp;gt;&lt;hr size=&quot;1&quot;&gt;+ attach(type, o: EventObserver): void&lt;br&gt;+ detach(type, o): void&lt;br&gt;+ publish(e: DomainEvent): void&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;an observer raising an exception is logged and&lt;br&gt;isolated — it cannot fail the enrolment&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="845" y="655" width="320" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="EventObserver" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«interface»  — Observer&lt;/i&gt;&lt;br&gt;&lt;b&gt;EventObserver&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ onEvent(e: DomainEvent): void&lt;br&gt;+ interestedIn(): Set&amp;lt;EventType&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1215" y="655" width="320" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="WaitlistObserver" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteObserver&lt;/i&gt;&lt;br&gt;&lt;b&gt;WaitlistObserver&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ onEvent(e)&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;on SeatReleased: notify the&lt;br&gt;next waitlisted student that&lt;br&gt;a spot has opened up&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="845" y="805" width="225" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="AdvisorObserver" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteObserver&lt;/i&gt;&lt;br&gt;&lt;b&gt;AdvisorObserver&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ onEvent(e)&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;on StudentDropped where the&lt;br&gt;course is degree-critical:&lt;br&gt;notify the academic advisor&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1085" y="805" width="225" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="AdminAlertObserver" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteObserver&lt;/i&gt;&lt;br&gt;&lt;b&gt;AdminAlertObserver&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ onEvent(e)&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;on SystemError: alert&lt;br&gt;administrators of any&lt;br&gt;system-wide error&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1325" y="805" width="210" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="NotificationChannel" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt; &lt;b&gt;NotificationChannel&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ send(to, subject, body): void" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="845" y="945" width="290" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="EmailChannel" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;EmailChannel&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;SMTP adapter&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1175" y="945" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SmsChannel" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;SmsChannel&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;future — zero change&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d6b656;dashed=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1375" y="945" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="oNotify" value="notifies    0..*" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#d6b656;fontSize=10;" edge="1" parent="1" source="NotificationPublisher" target="EventObserver">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oImpl1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.15;entryY=1;entryDx=0;entryDy=0;strokeColor=#d6b656;" edge="1" parent="1" source="WaitlistObserver" target="EventObserver">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oImpl2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#d6b656;" edge="1" parent="1" source="AdvisorObserver" target="EventObserver">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oImpl3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.85;entryY=1;entryDx=0;entryDy=0;strokeColor=#d6b656;" edge="1" parent="1" source="AdminAlertObserver" target="EventObserver">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oCh1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#d6b656;" edge="1" parent="1" source="EmailChannel" target="NotificationChannel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oCh2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#d6b656;" edge="1" parent="1" source="SmsChannel" target="NotificationChannel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="oUses" value="&amp;laquo;uses&amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;dashed=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;strokeColor=#d6b656;fontSize=9;" edge="1" parent="1" source="WaitlistObserver" target="NotificationChannel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ============ FACTORY METHOD ============ -->
+        <mxCell id="zFactory" value="⑤ FACTORY METHOD  «Creational»  —  Administrator reporting&lt;br&gt;&lt;font style=&quot;font-size: 10px;font-weight:normal&quot;&gt;&lt;i&gt;Requirement: &quot;The system must generate various reports&quot; — enrolment statistics, faculty workload, course popularity, capacity thresholds.&lt;br&gt;Why: the caller asks for a report &lt;b&gt;kind&lt;/b&gt; and receives a Report without knowing which concrete class it got. A new report type never touches calling code.&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef8f2;strokeColor=#d79b00;dashed=1;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;fontColor=#a06f00;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1070" width="740" height="480" as="geometry" />
+        </mxCell>
+        <mxCell id="ReportFactory" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;Creator&lt;/i&gt;&lt;br&gt;&lt;b&gt;ReportFactory&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- registry: Map&amp;lt;ReportType, Class&amp;gt;&lt;hr size=&quot;1&quot;&gt;&lt;b&gt;+ createReport(type: ReportType): Report&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;◀ the factory method&lt;/i&gt;&lt;/font&gt;&lt;br&gt;+ register(type, cls): void&lt;br&gt;+ availableTypes(): List" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="1160" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="Report" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«interface»  — Product&lt;/i&gt;&lt;br&gt;&lt;b&gt;Report&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ generate(criteria: Criteria): ReportData&lt;br&gt;+ title(): String&lt;br&gt;+ export(fmt: Format): byte[]" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="420" y="1160" width="330" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="EnrolmentStatisticsReport" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;EnrolmentStatistics&lt;br&gt;Report&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;by department&lt;br&gt;and semester&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="55" y="1330" width="170" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="FacultyWorkloadReport" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;FacultyWorkload&lt;br&gt;Report&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;sections and credits&lt;br&gt;taught per instructor&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="235" y="1330" width="170" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="CoursePopularityReport" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;CoursePopularity&lt;br&gt;Report&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;enrolment trend&lt;br&gt;across semesters&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="415" y="1330" width="170" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="CapacityThresholdReport" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;CapacityThreshold&lt;br&gt;Report&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;the &amp;gt;90% capacity&lt;br&gt;use case from §3.3&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d79b00;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="595" y="1330" width="170" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="ReportData" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;ReportData&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- columns: List&amp;lt;String&amp;gt;&lt;br&gt;- rows: List&amp;lt;Row&amp;gt;&lt;hr size=&quot;1&quot;&gt;+ asTable(): String&lt;br&gt;+ asCsv(): String" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="420" y="1450" width="200" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="fCreates" value="&amp;laquo;creates&amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#d79b00;fontSize=10;" edge="1" parent="1" source="ReportFactory" target="Report">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fImpl1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.1;entryY=1;entryDx=0;entryDy=0;strokeColor=#d79b00;" edge="1" parent="1" source="EnrolmentStatisticsReport" target="Report">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fImpl2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.37;entryY=1;entryDx=0;entryDy=0;strokeColor=#d79b00;" edge="1" parent="1" source="FacultyWorkloadReport" target="Report">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fImpl3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.63;entryY=1;entryDx=0;entryDy=0;strokeColor=#d79b00;" edge="1" parent="1" source="CoursePopularityReport" target="Report">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fImpl4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.9;entryY=1;entryDx=0;entryDy=0;strokeColor=#d79b00;" edge="1" parent="1" source="CapacityThresholdReport" target="Report">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="fData" value="produces" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#d79b00;fontSize=10;" edge="1" parent="1" source="Report" target="ReportData">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="502" y="1300" />
+              <mxPoint x="790" y="1300" />
+              <mxPoint x="790" y="1420" />
+              <mxPoint x="520" y="1420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ============ FACADE + SINGLETON ============ -->
+        <mxCell id="zFacade" value="⑥ FACADE  «Structural»  —  one entry point over the enrolment subsystems&lt;br&gt;&lt;font style=&quot;font-size: 10px;font-weight:normal&quot;&gt;&lt;i&gt;Requirement: &quot;The same back-end services must be usable by both the web application and a future mobile application.&quot;&lt;br&gt;Why: the Service API layer calls one method and holds no business rules. Every collaborator is injected as an abstraction — the Dependency Inversion showcase.&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf5f4;strokeColor=#b85450;dashed=1;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;fontColor=#8c3a37;" vertex="1" parent="1">
+          <mxGeometry x="820" y="1070" width="740" height="480" as="geometry" />
+        </mxCell>
+        <mxCell id="EnrollmentFacade" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;Facade&lt;/i&gt;&lt;br&gt;&lt;b&gt;EnrollmentFacade&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- validator: EnrollmentValidator&lt;br&gt;- txManager: TransactionManager&lt;br&gt;- publisher: NotificationPublisher&lt;br&gt;- enrolRepo: IEnrollmentRepository&lt;hr size=&quot;1&quot;&gt;+ enrol(studentId, sectionId): Result&lt;br&gt;+ drop(studentId, sectionId): Result&lt;br&gt;+ forceAdd(adminId, ...): Result&lt;br&gt;+ viewSchedule(studentId, sem): Calendar&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;Depends on abstractions only — every collaborator is&lt;br&gt;injected via constructor (Dependency Inversion)&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="845" y="1155" width="330" height="215" as="geometry" />
+        </mxCell>
+        <mxCell id="IEnrollmentRepository" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«interface»&lt;/i&gt;&lt;br&gt;&lt;b&gt;IEnrollmentRepository&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ save(e: Enrollment): void&lt;br&gt;+ findByStudent(id): List&lt;br&gt;+ delete(id): void&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;declared in the Business Logic layer,&lt;br&gt;implemented in the Data Access layer&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="845" y="1395" width="330" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="InMemoryRepo" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;InMemory&lt;br&gt;EnrollmentRepository&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;used by the&lt;br&gt;proof-of-concept&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1205" y="1395" width="165" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="SqlRepo" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;Sql&lt;br&gt;EnrollmentRepository&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;production —&lt;br&gt;fully substitutable (LSP)&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#b85450;dashed=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="1395" width="155" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="faDep2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;strokeColor=#b85450;" edge="1" parent="1" source="EnrollmentFacade" target="IEnrollmentRepository">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="faImpl1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.4;entryDx=0;entryDy=0;strokeColor=#b85450;" edge="1" parent="1" source="InMemoryRepo" target="IEnrollmentRepository">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="faImpl2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;strokeColor=#b85450;" edge="1" parent="1" source="SqlRepo" target="IEnrollmentRepository">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+
+        <mxCell id="zBuilder" value="⑦ BUILDER  «Creational»  —  multi-criteria course search queries&lt;br&gt;&lt;font style=&quot;font-size: 10px;font-weight:normal&quot;&gt;&lt;i&gt;Requirement: &quot;Students can search for courses by department, course number, keyword, and instructor&quot; — four independent optional filters = 16 combinations.&lt;br&gt;Why: avoids telescoping constructors and nullable-parameter call sites; build() validates the invariants so an invalid query object can never exist (Fail Fast).&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f2f8fa;strokeColor=#0e8088;dashed=1;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;fontColor=#0b6167;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1580" width="740" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="SearchQueryBuilder" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«interface»  — Builder&lt;/i&gt;&lt;br&gt;&lt;b&gt;SearchQueryBuilder&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;+ reset(): SearchQueryBuilder&lt;br&gt;+ department(d): SearchQueryBuilder&lt;br&gt;+ courseNumber(n): SearchQueryBuilder&lt;br&gt;+ keyword(k): SearchQueryBuilder&lt;br&gt;+ instructor(i): SearchQueryBuilder&lt;br&gt;+ build(): CourseSearchQuery&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;every step returns self — fluent chaining&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#d6eef0;strokeColor=#0e8088;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="1665" width="300" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="CourseSearchQueryBuilder" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;ConcreteBuilder&lt;/i&gt;&lt;br&gt;&lt;b&gt;CourseSearchQueryBuilder&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- criteria: Map&amp;lt;Field, Object&amp;gt;&lt;hr size=&quot;1&quot;&gt;+ semester(s) / school(s)&lt;br&gt;+ minOccupancy(pct)&lt;br&gt;+ withAvailableSeatsOnly()&lt;br&gt;+ build(): CourseSearchQuery&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;build() validates: at least one criterion&lt;br&gt;present · 0.0 ≤ minOccupancy ≤ 1.0 ·&lt;br&gt;semester not in the past&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#ffffff;strokeColor=#0e8088;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="60" y="1855" width="300" height="175" as="geometry" />
+        </mxCell>
+        <mxCell id="CourseSearchQuery" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;Product&amp;nbsp;&amp;nbsp;— immutable&lt;/i&gt;&lt;br&gt;&lt;b&gt;CourseSearchQuery&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;all fields read-only — no setters&lt;/font&gt;&lt;br&gt;- department: String?&lt;br&gt;- courseNumber: String?&lt;br&gt;- keyword: String?&lt;br&gt;- instructor: String?&lt;br&gt;- semester: Semester?&lt;br&gt;- minOccupancy: float?&lt;hr size=&quot;1&quot;&gt;+ matches(section): bool&lt;br&gt;+ describe(): String&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;immutable, so it is safe to log, cache and pass to&lt;br&gt;the Reporting Service without defensive copying&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#d6eef0;strokeColor=#0e8088;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="420" y="1780" width="330" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="CatalogQueryDirector" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;Director&lt;/i&gt;&lt;br&gt;&lt;b&gt;CatalogQueryDirector&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;- builder: SearchQueryBuilder&lt;hr size=&quot;1&quot;&gt;+ openSectionsFor(dept, sem)&lt;br&gt;+ taughtBy(instructor, sem)&lt;br&gt;+ overCapacityInSchool(school, 0.9)&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;holds the reusable construction recipes.&lt;br&gt;overCapacityInSchool() &lt;b&gt;is&lt;/b&gt; the §3.3 use case, so&lt;br&gt;student search and admin reporting share&lt;br&gt;one builder (DRY)&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#d6eef0;strokeColor=#0e8088;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="420" y="1620" width="330" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="bImpl" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=0;endSize=14;dashed=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#0e8088;" edge="1" parent="1" source="CourseSearchQueryBuilder" target="SearchQueryBuilder">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bBuilds" value="&amp;laquo;creates&amp;raquo;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#0e8088;fontSize=10;" edge="1" parent="1" source="CourseSearchQueryBuilder" target="CourseSearchQuery">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="bDirects" value="directs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;endFill=0;endSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;strokeColor=#0e8088;fontSize=10;" edge="1" parent="1" source="CatalogQueryDirector" target="SearchQueryBuilder">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="390" y="1692" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bExample" value="&lt;b&gt;Client-side call — the §3.1 use case&lt;/b&gt;&lt;br&gt;&lt;i&gt;&quot;browse all computer science courses for the upcoming&lt;br&gt;semester that a specific professor teaches&quot;&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;font face=&quot;Courier New&quot; style=&quot;font-size:10px&quot;&gt;query = (CourseSearchQuery.builder()&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;.department(&quot;Computer Science&quot;)&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;.instructor(&quot;Prof. Silva&quot;)&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;.semester(Semester.FALL_2026)&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;.build())&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;vs. without Builder&lt;/b&gt;&lt;br&gt;&lt;font face=&quot;Courier New&quot; style=&quot;font-size:10px&quot;&gt;search(None, None, None, &quot;Prof. Silva&quot;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; FALL_2026, None, False)&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;i&gt;— a transposed argument is a silent bug, not an error&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="795" y="1620" width="360" height="290" as="geometry" />
+        </mxCell>
+
+        <mxCell id="zRejected" value="⊘ PATTERNS CONSIDERED AND DELIBERATELY REJECTED&lt;br&gt;&lt;font style=&quot;font-size: 10px;font-weight:normal&quot;&gt;&lt;i&gt;A justified rejection is a design decision. Recorded here so the reasoning is visible on the diagram, not only in the report.&lt;/i&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#777777;dashed=1;strokeWidth=2;verticalAlign=top;align=center;spacingTop=6;fontSize=13;fontStyle=1;fontColor=#444444;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="1580" width="440" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="rejSingleton" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;i&gt;«rejected»&lt;/i&gt;&lt;br&gt;&lt;b&gt;&lt;s&gt;Singleton — NotificationService&lt;/s&gt;&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;&lt;u&gt;- instance: NotificationService&lt;/u&gt;&lt;br&gt;&lt;u&gt;+ getInstance()&lt;/u&gt;&lt;/font&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:10px&quot;&gt;&lt;b&gt;Conflicts with 3 of the 5 SOLID principles:&lt;/b&gt;&lt;br&gt;&lt;b&gt;SRP&lt;/b&gt; — also manages its own lifecycle, so it&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;has two reasons to change&lt;br&gt;&lt;b&gt;DIP&lt;/b&gt; — getInstance() binds callers to a&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;concrete class, and the dependency is&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;invisible in the constructor signature&lt;br&gt;&lt;b&gt;OCP&lt;/b&gt; — cannot substitute a test double or&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;alternative dispatcher without editing&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;the accessor&lt;br&gt;&lt;br&gt;Plus global mutable state and test leakage.&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#f8cecc;strokeColor=#b85450;dashed=1;fontSize=10;fontColor=#7a3330;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="1660" width="400" height="215" as="geometry" />
+        </mxCell>
+        <mxCell id="compRoot" value="&lt;div style=&quot;text-align:center&quot;&gt;&lt;b&gt;✔ What we do instead — Composition Root&lt;/b&gt;&lt;/div&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:10px&quot;&gt;main.py constructs &lt;b&gt;exactly one&lt;/b&gt; NotificationPublisher and&lt;br&gt;injects that same reference into every collaborator:&lt;br&gt;&lt;font face=&quot;Courier New&quot; style=&quot;font-size:9px&quot;&gt;publisher = NotificationPublisher()&lt;br&gt;publisher.attach(SEAT_RELEASED, WaitlistObserver(..))&lt;br&gt;facade = EnrollmentFacade(validator, tx, publisher, repo)&lt;/font&gt;&lt;br&gt;Same uniqueness guarantee, &lt;b&gt;no global access point&lt;/b&gt;, no&lt;br&gt;hidden dependency, every dependency visible in the&lt;br&gt;constructor. This is the &lt;i&gt;single-instance lifestyle&lt;/i&gt;, not the&lt;br&gt;&lt;i&gt;Singleton pattern&lt;/i&gt;.&lt;br&gt;&lt;br&gt;&lt;i&gt;A Python module is already a singleton, so a hand-written&lt;br&gt;getInstance() would also be un-idiomatic here.&lt;/i&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="1895" width="400" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="rejArrow" value="replaced by" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#82b366;fontSize=10;fontStyle=1;" edge="1" parent="1" source="rejSingleton" target="compRoot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rejOthers" value="&lt;b&gt;Also evaluated and rejected&lt;/b&gt;&amp;nbsp;&amp;nbsp;— full reasoning in §6 of 01-design-patterns.md&lt;br&gt;&lt;b&gt;Abstract Factory&lt;/b&gt; one product family only, so Factory Method is the right granularity (YAGNI)&amp;nbsp;&amp;nbsp;·&amp;nbsp;&amp;nbsp;&lt;b&gt;Decorator&lt;/b&gt; for chaining validation rules — a decorator chain short-circuits, but the requirement benefits from reporting &lt;u&gt;every&lt;/u&gt; failure&lt;br&gt;&lt;b&gt;Proxy&lt;/b&gt; lazy roster loading — no requirement drives it; premature optimisation (KISS)&amp;nbsp;&amp;nbsp;·&amp;nbsp;&amp;nbsp;&lt;b&gt;Template Method&lt;/b&gt; report skeleton — closest call; the four reports differ in aggregation shape, not in one substitutable step&amp;nbsp;&amp;nbsp;·&amp;nbsp;&amp;nbsp;&lt;b&gt;Chain of Responsibility&lt;/b&gt; approval escalation — the university has single-administrator approval, not a hierarchy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#777777;align=left;verticalAlign=middle;spacingLeft=10;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="2080" width="1580" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="crossRef" value="&lt;b&gt;How the patterns collaborate at run time&lt;/b&gt;&amp;nbsp;&amp;nbsp;(see diagram 05 — Sequence)&lt;br&gt;&lt;br&gt;&lt;b&gt;EnrollmentFacade&lt;/b&gt; ⑥ &amp;nbsp;→&amp;nbsp; asks &lt;b&gt;EnrollmentValidator&lt;/b&gt; ① to run every &lt;b&gt;ValidationRule&lt;/b&gt; ①&amp;nbsp;&amp;nbsp;→&amp;nbsp; wraps the state changes in an &lt;b&gt;AddCourseCommand&lt;/b&gt; ② handed to &lt;b&gt;TransactionManager&lt;/b&gt; ②&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;→&amp;nbsp; on commit, publishes a domain event through &lt;b&gt;NotificationPublisher&lt;/b&gt; ④&amp;nbsp;&amp;nbsp;→&amp;nbsp; each &lt;b&gt;EventObserver&lt;/b&gt; ④ reacts independently.&lt;br&gt;&lt;b&gt;GradeSubmission&lt;/b&gt; ③ moves Draft → PendingApproval → Submitted, delegating every transition to its current &lt;b&gt;GradeState&lt;/b&gt; ③. &lt;b&gt;ReportFactory&lt;/b&gt; ⑤ and &lt;b&gt;CourseSearchQueryBuilder&lt;/b&gt; ⑦ are invoked independently by the Administrator and Student modules." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=middle;spacingLeft=10;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="40" y="2180" width="1580" height="110" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
