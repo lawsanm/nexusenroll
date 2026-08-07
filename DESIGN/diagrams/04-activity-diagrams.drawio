@@ -1,0 +1,315 @@
+<mxfile host="app.diagrams.net" version="24.7.17" type="device">
+  <diagram id="activity-enrolment" name="Activity — Course Enrolment">
+    <mxGraphModel dx="1800" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1754" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="Activity Diagram — Course Enrolment (Add Course)&lt;br&gt;&lt;font style=&quot;font-size: 12px;font-weight:normal&quot;&gt;Key business process. Swimlanes show which business-tier object owns each activity. Patterns involved: Facade ⑥ · Strategy ① · Command ② · Observer ④&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="1560" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="laneStudent" value="Student" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=13;horizontal=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="230" height="1360" as="geometry" />
+        </mxCell>
+        <mxCell id="laneFacade" value="EnrollmentFacade  «Facade»" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;horizontal=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="90" width="280" height="1360" as="geometry" />
+        </mxCell>
+        <mxCell id="laneValidator" value="EnrollmentValidator + ValidationRule  «Strategy»" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;horizontal=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="90" width="420" height="1360" as="geometry" />
+        </mxCell>
+        <mxCell id="laneTx" value="TransactionManager + Commands  «Command»" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;horizontal=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="90" width="340" height="1360" as="geometry" />
+        </mxCell>
+        <mxCell id="laneNotif" value="NotificationPublisher  «Observer»" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;horizontal=1;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="90" width="290" height="1360" as="geometry" />
+        </mxCell>
+
+        <mxCell id="start" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="137" y="155" width="36" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="A1" value="Browse / search the&lt;br&gt;course catalogue&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;by department, course number,&lt;br&gt;keyword or instructor&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="50" y="215" width="210" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="A2" value="Select a section and&lt;br&gt;request enrolment" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="50" y="315" width="210" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="A3" value="enrol(studentId, sectionId)&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;build EnrollmentRequest&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="285" y="315" width="250" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="A4" value="validator.validateAll(request)" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="285" y="405" width="250" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="fork" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="590" y="480" width="340" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="forkLbl" value="&lt;i&gt;the Context iterates every registered ValidationRule&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=9;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="570" y="458" width="380" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="A5" value="&lt;b&gt;PrerequisiteRule&lt;/b&gt;&lt;br&gt;.validate()&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;has the student completed&lt;br&gt;every prerequisite at the&lt;br&gt;minimum grade?&lt;/font&gt;" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="560" y="515" width="130" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="A6" value="&lt;b&gt;CapacityRule&lt;/b&gt;&lt;br&gt;.validate()&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;section.hasAvailableSeat()&lt;br&gt;— skipped when the request&lt;br&gt;is an admin override&lt;/font&gt;" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="695" y="515" width="130" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="A7" value="&lt;b&gt;TimeConflictRule&lt;/b&gt;&lt;br&gt;.validate()&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:9px&quot;&gt;does any TimeSlot overlap&lt;br&gt;an already-enrolled&lt;br&gt;section?&lt;/font&gt;" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="830" y="515" width="130" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="join" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="590" y="650" width="340" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="A8" value="Aggregate &lt;u&gt;all&lt;/u&gt; failures into one ValidationResult&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;the student is shown every problem at once,&lt;br&gt;not just the first rule that failed&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="590" y="680" width="340" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="D1" value="result&lt;br&gt;.isValid() ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="320" y="790" width="180" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="D2" value="is the &lt;u&gt;only&lt;/u&gt; failure&lt;br&gt;the capacity rule?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="290" y="925" width="240" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Awl" value="Waitlist.add(studentId)&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;return queue position&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="282" y="1060" width="120" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Arej" value="Return rejection listing&lt;br&gt;every failed rule" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="412" y="1060" width="125" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Asuccess" value="Return success + updated schedule" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="285" y="1270" width="250" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="A9" value="TransactionManager&lt;br&gt;.runAtomic([ AddCourseCommand ])" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="980" y="790" width="320" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="A10" value="&lt;b&gt;AddCourseCommand.execute()&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:10px&quot;&gt;1.&amp;nbsp; create Enrollment record&lt;br&gt;2.&amp;nbsp; section.reserveSeat()&amp;nbsp;&lt;i&gt;capacity updated&lt;/i&gt;&lt;br&gt;3.&amp;nbsp; schedule.addSection()&amp;nbsp;&lt;i&gt;schedule modified&lt;/i&gt;&lt;/font&gt;" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="980" y="875" width="320" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="D3" value="did any step&lt;br&gt;raise an exception?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="1000" width="280" height="95" as="geometry" />
+        </mxCell>
+        <mxCell id="A11" value="&lt;b&gt;rollbackAll()&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;pop the stack, call undo()&lt;br&gt;on each executed command&lt;br&gt;in reverse order&lt;br&gt;&lt;br&gt;&lt;b&gt;no partial state survives&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="985" y="1130" width="150" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="A12" value="&lt;b&gt;COMMIT&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;all three state changes&lt;br&gt;persisted together as one&lt;br&gt;local ACID transaction&lt;/font&gt;" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1145" y="1130" width="150" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="A13" value="publish(&lt;b&gt;StudentEnrolled&lt;/b&gt;)&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;fire-and-forget — the enrolment&lt;br&gt;is already committed&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="1130" width="270" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="A14" value="Each observer reacts independently&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;subscribers to StudentEnrolled:&lt;br&gt;Academic Records · future Financial Aid&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="1240" width="270" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="endNotif" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1437" y="1350" width="36" height="36" as="geometry" />
+        </mxCell>
+
+        <mxCell id="SwWl" value="Receive waitlist&lt;br&gt;confirmation + position" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="55" y="1060" width="200" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="endWl" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="72" y="1135" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SwRej" value="Receive rejection listing&lt;br&gt;every failed rule&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;may correct and retry&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="55" y="1185" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="endRej" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="72" y="1265" width="30" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="SwOk" value="View updated schedule&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;dynamic calendar-like view&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="55" y="1330" width="200" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="endOk" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1400" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="f1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="start" target="A1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="A1" target="A2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="A2" target="A3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="A3" target="A4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="A4" target="fork"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.1;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="fork" target="A5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="fork" target="A6"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.9;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="fork" target="A7"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.1;entryY=0;" edge="1" parent="1" source="A5" target="join"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="A6" target="join"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.9;entryY=0;" edge="1" parent="1" source="A7" target="join"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="join" target="A8"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f13" value="return&lt;br&gt;ValidationResult" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.4;fontSize=9;" edge="1" parent="1" source="A8" target="D1"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="565" y="713" /><mxPoint x="565" y="828" /></Array></mxGeometry></mxCell>
+
+        <mxCell id="f14" value="[ valid ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;fontSize=10;fontStyle=1;fontColor=#2d7a2d;strokeColor=#2d7a2d;" edge="1" parent="1" source="D1" target="A9"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f15" value="[ invalid ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=10;fontStyle=1;fontColor=#b85450;strokeColor=#b85450;" edge="1" parent="1" source="D1" target="D2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f16" value="[ yes ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.25;exitY=1;entryX=0.5;entryY=0;fontSize=10;" edge="1" parent="1" source="D2" target="Awl"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f17" value="[ no ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.75;exitY=1;entryX=0.5;entryY=0;fontSize=10;" edge="1" parent="1" source="D2" target="Arej"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="Awl" target="SwWl"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.15;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="SwWl" target="endWl"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.75;entryX=1;entryY=0.5;" edge="1" parent="1" source="Arej" target="SwRej"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.15;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="SwRej" target="endRej"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="f22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="A9" target="A10"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="A10" target="D3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f24" value="[ yes ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.25;exitY=1;entryX=0.5;entryY=0;fontSize=10;fontColor=#b85450;strokeColor=#b85450;" edge="1" parent="1" source="D3" target="A11"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f25" value="[ no ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.75;exitY=1;entryX=0.5;entryY=0;fontSize=10;fontColor=#2d7a2d;strokeColor=#2d7a2d;" edge="1" parent="1" source="D3" target="A12"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f26" value="transaction failed —&lt;br&gt;nothing was changed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;fontSize=9;fontColor=#b85450;strokeColor=#b85450;" edge="1" parent="1" source="A11" target="SwRej"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="960" y="1185" /><mxPoint x="960" y="1215" /></Array></mxGeometry></mxCell>
+        <mxCell id="f27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="A12" target="A13"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="A13" target="A14"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="A14" target="endNotif"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.75;entryX=1;entryY=0.5;" edge="1" parent="1" source="A12" target="Asuccess"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="960" y="1213" /><mxPoint x="960" y="1295" /></Array></mxGeometry></mxCell>
+        <mxCell id="f31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="Asuccess" target="SwOk"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="SwOk" target="endOk"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="noteTx" value="&lt;b&gt;Transaction Management requirement&lt;/b&gt;&lt;br&gt;&lt;i&gt;&quot;either the entire operation succeeds (the student is enrolled, the class capacity is&lt;br&gt;updated, and the schedule is modified) or the entire operation fails, leaving no&lt;br&gt;partial state changes.&quot;&lt;/i&gt;&lt;br&gt;&lt;br&gt;The three numbered steps inside execute() are exactly the three state changes named in the&lt;br&gt;requirement. Because they all live in the Enrolment Service's own bounded context, the&lt;br&gt;commit is a single local ACID transaction and undo() provides the failure path." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="180" width="580" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="noteDecouple" value="&lt;b&gt;Note — why the notification lane comes &lt;u&gt;after&lt;/u&gt; commit&lt;/b&gt;&lt;br&gt;The publish step is fire-and-forget. If every observer failed, the enrolment&lt;br&gt;would still be valid and committed. This is the concrete meaning of&lt;br&gt;&lt;i&gt;&quot;decoupled from the core enrolment logic.&quot;&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="330" width="580" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="noteWl" value="&lt;b&gt;Waitlist branch.&lt;/b&gt; Distinguishing &quot;full&quot; from&lt;br&gt;&quot;ineligible&quot; matters: a student who fails only the&lt;br&gt;capacity check is eligible and is queued, while a&lt;br&gt;student missing a prerequisite must be rejected." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="930" width="330" height="75" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="activity-grades" name="Activity — Batch Grade Submission">
+    <mxGraphModel dx="1800" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="gTitle" value="Activity Diagram — Batch Grade Submission with Error Isolation&lt;br&gt;&lt;font style=&quot;font-size: 12px;font-weight:normal&quot;&gt;Requirement: &lt;i&gt;&quot;If an error occurs during the process (e.g. an invalid grade is submitted), the system must handle it gracefully and allow the professor to correct it &lt;b&gt;without losing other submitted grades&lt;/b&gt;.&quot;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=20;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="10" width="1560" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gLane1" value="Faculty" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="290" height="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="gLane2" value="GradeSubmission  «State»" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="330" y="90" width="330" height="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="gLane3" value="BatchGradeProcessor" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="660" y="90" width="380" height="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="gLane4" value="Administrator" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="90" width="270" height="1180" as="geometry" />
+        </mxCell>
+        <mxCell id="gLane5" value="AcademicRecord" style="swimlane;html=1;startSize=35;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1310" y="90" width="290" height="1180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gStart" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="167" y="150" width="36" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="gB1" value="View class roster&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;real-time list of enrolled students&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="55" y="210" width="260" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="gB2" value="Enter a batch of final grades&lt;br&gt;for the whole section" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="55" y="300" width="260" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="gB3" value="submitForApproval()" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="55" y="390" width="260" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gS1" value="state = &lt;b&gt;DraftState&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;entries may still be added or edited&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="345" y="300" width="300" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="gS2" value="delegate to state:&lt;br&gt;&lt;b&gt;DraftState.submitForApproval(this)&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;→ setState(PendingApprovalState)&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="345" y="390" width="300" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="gS3" value="state = &lt;b&gt;PendingApprovalState&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;the &quot;Pending&quot; state named in the requirement&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="345" y="495" width="300" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gS4" value="state = &lt;b&gt;PartiallyRejectedState&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;&lt;font style=&quot;font-size:10px&quot;&gt;accepted entries are &lt;u&gt;retained&lt;/u&gt;;&lt;br&gt;only the rejected ones are returned&lt;br&gt;for correction&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="345" y="810" width="300" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="gS5" value="state = &lt;b&gt;SubmittedState&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;terminal — the final &quot;Submitted&quot; state&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="345" y="1060" width="300" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gP1" value="Iterate the batch, validating&lt;br&gt;&lt;b&gt;each entry independently&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;letter grade in allowed set · student actually&lt;br&gt;enrolled in this section · not already graded&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="675" y="495" width="350" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="gPD1" value="entry valid?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="740" y="605" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="gP2" value="add to&lt;br&gt;&lt;b&gt;accepted&lt;/b&gt; list" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="675" y="710" width="160" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="gP3" value="add to &lt;b&gt;rejected&lt;/b&gt; list&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;with the reason&lt;/font&gt;" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="855" y="710" width="170" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="gPD2" value="any entries rejected?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="720" y="805" width="260" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="gP4" value="Persist accepted grades&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;valid work is never discarded&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="675" y="940" width="350" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gB4" value="Correct only the rejected entries&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;correctEntry(grade) — the previously accepted&lt;br&gt;grades are untouched&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="55" y="810" width="260" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="gB5" value="Resubmit corrected entries" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="55" y="935" width="260" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gA1" value="Review pending submission" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1055" y="940" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="gAD" value="approve?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1085" y="1030" width="180" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="gA2" value="reject(reason)&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;returns to faculty&lt;/font&gt;" style="rounded=1;arcSize=20;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1055" y="1150" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gR1" value="Update student academic records&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;addGrade() for each accepted entry;&lt;br&gt;recalculate GPA and degree progress&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1325" y="1060" width="260" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="gR2" value="publish(&lt;b&gt;GradesSubmitted&lt;/b&gt;)&lt;br&gt;&lt;font style=&quot;font-size:9px&quot;&gt;Observer ④ — students and advisors notified&lt;/font&gt;" style="rounded=1;arcSize=30;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1325" y="1160" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gEnd" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="1440" y="1245" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gf1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gStart" target="gB1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gB1" target="gB2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="gB2" target="gS1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gB2" target="gB3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="gB3" target="gS2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gS2" target="gS3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="gS3" target="gP1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gP1" target="gPD1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf9" value="[ yes ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.25;exitY=1;entryX=0.5;entryY=0;fontSize=10;fontColor=#2d7a2d;strokeColor=#2d7a2d;" edge="1" parent="1" source="gPD1" target="gP2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf10" value="[ no ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.75;exitY=1;entryX=0.5;entryY=0;fontSize=10;fontColor=#b85450;strokeColor=#b85450;" edge="1" parent="1" source="gPD1" target="gP3"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="1" source="gP2" target="gPD2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.75;entryY=0;" edge="1" parent="1" source="gP3" target="gPD2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gfLoop" value="&lt;i&gt;next entry&lt;/i&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=1;entryY=0.5;fontSize=9;dashed=1;" edge="1" parent="1" source="gPD1" target="gP1"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1010" y="645" /><mxPoint x="1010" y="535" /></Array></mxGeometry></mxCell>
+        <mxCell id="gf13" value="[ yes ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;fontSize=10;fontColor=#b85450;strokeColor=#b85450;" edge="1" parent="1" source="gPD2" target="gS4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf14" value="[ no ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=10;fontColor=#2d7a2d;strokeColor=#2d7a2d;" edge="1" parent="1" source="gPD2" target="gP4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf15" value="return rejected entries only" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;fontSize=9;" edge="1" parent="1" source="gS4" target="gB4"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gB4" target="gB5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf17" value="&lt;i&gt;resubmit — accepted grades preserved&lt;/i&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.75;fontSize=9;dashed=1;strokeColor=#6c8ebf;" edge="1" parent="1" source="gB5" target="gS3"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="335" y="958" /><mxPoint x="335" y="540" /></Array></mxGeometry></mxCell>
+        <mxCell id="gf18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="gP4" target="gA1"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gA1" target="gAD"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf20" value="[ yes ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;fontSize=10;fontColor=#2d7a2d;strokeColor=#2d7a2d;" edge="1" parent="1" source="gAD" target="gS5"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf21" value="[ no ]" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;fontSize=10;fontColor=#b85450;strokeColor=#b85450;" edge="1" parent="1" source="gAD" target="gA2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf22" value="&lt;i&gt;back to faculty for correction&lt;/i&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0;exitY=0.5;entryX=0.5;entryY=1;fontSize=9;dashed=1;strokeColor=#b85450;" edge="1" parent="1" source="gA2" target="gB4"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="185" y="1175" /></Array></mxGeometry></mxCell>
+        <mxCell id="gf23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="gS5" target="gR1"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1020" y="1090" /><mxPoint x="1020" y="1045" /><mxPoint x="1320" y="1045" /></Array></mxGeometry></mxCell>
+        <mxCell id="gf24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gR1" target="gR2"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="gf25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=blockThin;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gR2" target="gEnd"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="gNote" value="&lt;b&gt;Why the State pattern earns its place here&lt;/b&gt;&lt;br&gt;&lt;br&gt;The brief asks for &lt;i&gt;&quot;a process for grade approval (e.g. a &amp;quot;Pending&amp;quot; state before a final&lt;br&gt;&amp;quot;Submitted&amp;quot; state)&quot;&lt;/i&gt; and, separately, for graceful partial-failure handling.&lt;br&gt;&lt;br&gt;Both fall out of the same design. Each ConcreteState decides which transitions are&lt;br&gt;legal, so &lt;b&gt;PendingApprovalState&lt;/b&gt; refuses addEntry() while &lt;b&gt;PartiallyRejectedState&lt;/b&gt;&lt;br&gt;permits correctEntry() — and the accepted entries stay in the submission throughout.&lt;br&gt;An illegal call raises IllegalTransition rather than silently corrupting the batch.&lt;br&gt;&lt;br&gt;Full lifecycle: see diagram 06 — State Diagrams." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=11;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1055" y="150" width="530" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="gNote2" value="&lt;b&gt;Error isolation&lt;/b&gt;&lt;br&gt;Validation is per-entry, not per-batch.&lt;br&gt;One bad letter grade in a roster of 200&lt;br&gt;rejects &lt;u&gt;one&lt;/u&gt; entry, not 200." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;fontSize=10;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="1055" y="380" width="290" height="85" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
