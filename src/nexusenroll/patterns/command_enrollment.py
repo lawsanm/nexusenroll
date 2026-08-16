@@ -296,8 +296,14 @@ class TransactionManager:
         executed: list[EnrollmentCommand] = []  # the stack
         try:
             for command in commands:
+                # PUSH BEFORE EXECUTING.  A command that fails PART WAY through
+                # has still changed some state, so it must be on the stack to be
+                # undone.  Pushing only after success would strand exactly the
+                # partial changes this method exists to prevent.  undo() is safe
+                # to call either way because each command reverses only the
+                # steps it recorded as completed.
+                executed.append(command)
                 command.execute()
-                executed.append(command)          # push only after success
         except Exception as exc:                  # noqa: BLE001 - any failure rolls back
             self._rollback_all(executed)
             return TxResult(False, f"rolled back: {exc}")
