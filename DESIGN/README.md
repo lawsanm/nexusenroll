@@ -89,7 +89,7 @@ The design is deliberately partitioned so members can work in parallel without m
 |---|---|
 | **1** | Part A report sections: architecture write-up from `00`, plus tidy/annotate `01-architecture.drawio` |
 | **2** | Student module code: catalogue search + Builder ⑦, Strategy ① rules, schedule |
-| **3** | Enrolment core code: Facade ⑥, Command ②, TransactionManager, Observer ④, composition root in `main.py` |
+| **3** | Enrolment core code: Facade ⑥, Command ②, TransactionManager, Observer ④, composition root in `composition_root.py` |
 | **4** | Faculty module code: State ③ grade lifecycle, batch processor with error isolation |
 | **5** | Administrator module code: Factory Method ⑤ reports, account management, override |
 | **6** | Report assembly, diagram export, screencast recording, VLE submission |

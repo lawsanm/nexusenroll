@@ -111,7 +111,7 @@ class NotificationPublisher:
     class.  It only maps event types to subscribers and dispatches.
 
     Exactly one instance of this exists at runtime.  That guarantee comes from
-    the COMPOSITION ROOT in main.py -- not from a Singleton.  See
+    the COMPOSITION ROOT in composition_root.py -- not from a Singleton.  See
     01-design-patterns.md section 6 for why we rejected the pattern.
     """
 
@@ -252,7 +252,7 @@ class AuditObserver(EventObserver):
 
     This observer -- a stand-in for the future financial aid system named in the
     brief -- was added after the enrolment logic was complete.  It subscribes in
-    main.py and nothing else in the system knows it exists.  Open/Closed at
+    composition_root.py and nothing else in the system knows it exists.  Open/Closed at
     runtime.
     """
 

@@ -26,7 +26,7 @@ Chosen over pure 3-Tier and SOA; both rejections are argued in `00-architecture-
 
 **Patterns applied (7, vs. a minimum of 3):** Strategy · Command · State · Observer · Factory Method · Facade · Builder — all three GoF families covered.
 
-**Singleton was considered and deliberately rejected** (conflicts with SRP, DIP and OCP; the composition root in `main.py` gives the same single-instance guarantee). The reasoning is written up as part of the justification, not omitted — §6 of `01-design-patterns.md` plus a rejected-patterns panel on diagram 03.
+**Singleton was considered and deliberately rejected** (conflicts with SRP, DIP and OCP; the composition root in `composition_root.py` gives the same single-instance guarantee). The reasoning is written up as part of the justification, not omitted — §6 of `01-design-patterns.md` plus a rejected-patterns panel on diagram 03.
 
 > 📤 **Export note for the report:** diagrams 01 and 03 are A2-sized canvases. Export those as **PDF → Fit to page**, not PNG, or the text will be illegible on A4. The others export fine as PNG at 200% zoom.
 
@@ -47,7 +47,7 @@ cd src && python -m nexusenroll.main
 | `repositories/` | `I*Repository` interfaces (owned by the business layer) + in-memory implementations |
 | `services/` | The student, faculty and administrator modules |
 | `composition_root.py` | The single wiring point — this is what replaced Singleton |
-| `main.py` | Four acts: three modules' user stories, then three pattern proofs |
+| `main.py` | Four acts: the three modules' user stories, then Act 4's pattern proofs (Command, State and Observer, in six steps) |
 
 **Running the demo caught a genuine bug**, which is worth mentioning in the report as
 evidence the proof-of-concept is real: `TransactionManager.run_atomic()` pushed commands onto
@@ -55,18 +55,28 @@ the rollback stack only *after* `execute()` returned, so a command failing part-
 never rolled back — the exact partial state the requirement forbids. Commands are now pushed
 before execution. Act 4.1 prints the before/after counts that prove it.
 
-⏭️ **Next up:** report assembly (Part B7) and the screencast.
+---
+
+## ✅ Screencast script — WRITTEN (16 Aug 2026)
+
+`DESIGN/03-screencast-script.md` — timed to **9:40** against the 10-minute limit, shot by shot.
+Demo-led, because submission guideline 3 requires the video to focus on *"test cases to interact
+with the business logic tier"*: one run of `main.py` is the spine, and code appears only to
+explain a result already on screen. Every talking point cites an exact `file:line`, and all 63
+references were verified against the source.
+
+⏭️ **What is genuinely left:** report assembly (Part B7), recording, and the VLE upload.
 
 
 ---
 
 ## 📦 Submission Deliverables
 
-- [ ] **Design document** — overall architecture + UML diagrams + OO design + design patterns
-- [ ] **Source code** — C++, C#, Java, or Python (compressed file)
-- [ ] **Screencast video** — max 10 minutes, focused on interacting with the business logic tier via UI or test cases
+- [ ] **Design document** — overall architecture + UML diagrams + OO design + design patterns — *prose and diagrams all exist in `DESIGN/`; still needs assembling into one document*
+- [ ] **Source code** — C++, C#, Java, or Python (compressed file) — *code complete in `src/`; still needs zipping*
+- [ ] **Screencast video** — max 10 minutes, focused on interacting with the business logic tier via UI or test cases — *script written; not yet recorded*
 - [ ] **Upload all three to VLE** on or before 20 August 2026
-- [ ] Confirm team composition is 5–6 students
+- [ ] Confirm team composition is 5–6 students — ⚠️ *still unconfirmed; names and student IDs are needed for the title page*
 
 ---
 
@@ -124,7 +134,7 @@ Class structures: `DESIGN/diagrams/03-class-diagram-patterns.drawio`, zones ①�
 
 | Pattern | Why rejected |
 |---|---|
-| ~~Singleton~~ | Conflicts with SRP, DIP and OCP. The composition root in `main.py` already gives the single-instance guarantee, so `getInstance()` would add a global access point for no benefit. Also un-idiomatic in Python, where a module is already a singleton. |
+| ~~Singleton~~ | Conflicts with SRP, DIP and OCP. The composition root in `composition_root.py` already gives the single-instance guarantee, so `getInstance()` would add a global access point for no benefit. Also un-idiomatic in Python, where a module is already a singleton. |
 | ~~Abstract Factory~~ | One product family only — Factory Method is the right granularity (YAGNI) |
 | ~~Decorator~~ | A chain short-circuits; the requirement benefits from reporting *every* failed rule |
 | ~~Proxy~~ | No requirement drives it — premature optimisation (KISS) |
@@ -302,7 +312,7 @@ Submit a report that includes:
 Ordered by grade impact per hour. Design and code are both done, so nothing below is blocked.
 
 ### Day 1 — skeleton + the two patterns worth the most ✅ DONE
-- [x] Create the package layout (`domain/`, `patterns/`, `repositories/`, `services/`, `main.py`)
+- [x] Create the package layout (`domain/`, `patterns/`, `repositories/`, `services/`, `composition_root.py`, `main.py`)
 - [x] Domain entities as dataclasses, straight off diagram 02
 - [x] In-memory repositories behind the `I*Repository` interfaces
 - [x] **Strategy ①** — `ValidationRule` ABC + the three rules (plus `CreditLimitRule` as a live Open/Closed demo)

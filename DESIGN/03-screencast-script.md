@@ -56,7 +56,7 @@ whoever implemented a pattern should be the one narrating it (§ 3–7 map onto 
 |---|---|---|
 | File tree of `src/nexusenroll/` | "The package layout is the architecture. `domain` is the Business Logic layer, `repositories` is Data Access, `services` holds the three modules the brief names." | `src/nexusenroll/` |
 | Open `repositories/interfaces.py`, scroll to the header comment | "These repository interfaces are **declared in the business layer** and implemented in the data layer, so dependencies point inward at the domain. That's Dependency Inversion at the tier boundary." | `repositories/interfaces.py:1-18`, `IEnrollmentRepository` at **:23** |
-| Terminal: `cd src && python -m nexusenroll.main` — let the header print, then stop reading aloud | "One command, no dependencies, no database. Four acts: the three modules, then four proofs." | `main.py:375` |
+| Terminal: `cd src && python -m nexusenroll.main` — let the header print, then stop reading aloud | "One command, no dependencies, no database. Four acts: the three modules, then the proofs." | `main.py:375` |
 
 ---
 

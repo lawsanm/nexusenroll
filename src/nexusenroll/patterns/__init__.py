@@ -13,7 +13,7 @@ patterns.  Each module opens with a banner naming the pattern's GoF roles, the
 requirement it satisfies, and what would go wrong without it.
 
 Singleton was considered and DELIBERATELY REJECTED -- it conflicts with SRP,
-DIP and OCP, and the composition root in main.py already gives the same
+DIP and OCP, and the composition root in composition_root.py already gives the same
 single-instance guarantee with none of the cost.  Full reasoning in
 DESIGN/01-design-patterns.md section 6 and on diagram 03's rejected-patterns
 panel.

@@ -219,9 +219,9 @@ No `new`, no `getInstance()`, no import of a concrete class anywhere in the clas
 `NotificationService.getInstance()` to guarantee one observer registry. That would have made
 every call site depend on a concrete class through a dependency invisible in the constructor
 signature — a direct DIP violation, in the very document where we claim DIP adherence. We now
-get the single-instance guarantee from the **composition root** instead: `main.py` constructs one
-`NotificationPublisher` and injects that reference everywhere. Same guarantee, no global access
-point. Full reasoning in §6 of `01-design-patterns.md`.
+get the single-instance guarantee from the **composition root** instead: `composition_root.py`
+constructs one `NotificationPublisher` and injects that reference everywhere. Same guarantee, no
+global access point. Full reasoning in §6 of `01-design-patterns.md`.
 
 ---
 
@@ -275,7 +275,7 @@ patterns from collecting them.
 | **Law of Demeter** | `EnrollmentFacade` calls `validator.validateAll(req)`, never `validator.getRules()[0].getRepo()...` |
 | **Tell, Don't Ask** | `section.reserveSeat()` rather than reading `enrolledCount`, incrementing, and writing back |
 | **Fail Fast** | `GradeState` base methods raise `IllegalTransition` instead of silently ignoring an illegal call |
-| **Composition Root** | All object wiring happens in `main.py`; no class constructs its own dependencies — this is also what replaced the rejected Singleton |
+| **Composition Root** | All object wiring happens in `composition_root.py`; no class constructs its own dependencies — this is also what replaced the rejected Singleton |
 
 ---
 

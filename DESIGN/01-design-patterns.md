@@ -355,17 +355,23 @@ call is in the composition root, then the guarantee of a single instance is comi
 wiring, not the pattern**. We would have been paying Singleton's full SOLID cost for a global
 access point we had promised never to use — a pattern present for its own sake.
 
-**What we do instead.** The **composition root** owns instance lifetime. `main.py` constructs
-exactly one `NotificationPublisher` and injects that same reference into every collaborator:
+**What we do instead.** The **composition root** owns instance lifetime.
+`composition_root.py` — called once from `main.py` — constructs exactly one
+`NotificationPublisher` and injects that same reference into every collaborator:
 
 ```python
-# main.py — the composition root; the ONLY place objects are wired together
+# composition_root.py — the ONLY place objects are wired together
 publisher = NotificationPublisher()                  # exactly one, by construction
-publisher.attach(EventType.SEAT_RELEASED,   WaitlistObserver(email_channel, waitlist_repo))
-publisher.attach(EventType.STUDENT_DROPPED, AdvisorObserver(email_channel, user_repo))
-publisher.attach(EventType.SYSTEM_ERROR,    AdminAlertObserver(email_channel, user_repo))
+email = EmailChannel()
 
-facade = EnrollmentFacade(validator, tx_manager, publisher, enrol_repo)
+publisher.attach(EventType.SEAT_RELEASED,   WaitlistObserver(email, repos.waitlists, repos.users))
+publisher.attach(EventType.STUDENT_DROPPED, AdvisorObserver(email, repos.users,
+                                                            repos.programs, repos.courses))
+publisher.attach(EventType.SYSTEM_ERROR,    AdminAlertObserver(email, repos.users))
+
+facade = EnrollmentFacade(validator=validator, tx_manager=tx, publisher=publisher,
+                          receiver=receiver, enrol_repo=repos.enrolments,
+                          waitlist_repo=repos.waitlists, semester=SEMESTER)
 ```
 
 This is the *single-instance lifestyle* rather than the *Singleton pattern*: identical
