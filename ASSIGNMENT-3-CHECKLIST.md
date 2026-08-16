@@ -30,7 +30,32 @@ Chosen over pure 3-Tier and SOA; both rejections are argued in `00-architecture-
 
 > 📤 **Export note for the report:** diagrams 01 and 03 are A2-sized canvases. Export those as **PDF → Fit to page**, not PNG, or the text will be illegible on A4. The others export fine as PNG at 200% zoom.
 
-⏭️ **Next up:** Part B6 — the Python proof-of-concept. Then report assembly and the screencast.
+---
+
+## ✅ Implementation phase — COMPLETE (16 Aug 2026)
+
+Part B6 is done and runnable: **`src/nexusenroll/`**, Python 3.10+, no third-party dependencies.
+
+```
+cd src && python -m nexusenroll.main
+```
+
+| Package | Contents |
+|---|---|
+| `domain/` | Business entities straight off diagram 02 — the Business Logic layer |
+| `patterns/` | One module per pattern, each opening with a banner naming its GoF roles |
+| `repositories/` | `I*Repository` interfaces (owned by the business layer) + in-memory implementations |
+| `services/` | The student, faculty and administrator modules |
+| `composition_root.py` | The single wiring point — this is what replaced Singleton |
+| `main.py` | Four acts: three modules' user stories, then three pattern proofs |
+
+**Running the demo caught a genuine bug**, which is worth mentioning in the report as
+evidence the proof-of-concept is real: `TransactionManager.run_atomic()` pushed commands onto
+the rollback stack only *after* `execute()` returned, so a command failing part-way through was
+never rolled back — the exact partial state the requirement forbids. Commands are now pushed
+before execution. Act 4.1 prints the before/after counts that prove it.
+
+⏭️ **Next up:** report assembly (Part B7) and the screencast.
 
 
 ---
@@ -68,9 +93,9 @@ Chosen over pure 3-Tier and SOA; both rejections are argued in `00-architecture-
 ## Part B: Detailed Design & Implementation — 70%
 
 ### B1. Core feature scope
-- [ ] Student module
-- [ ] Faculty module
-- [ ] Administrator module
+- [x] Student module — `src/nexusenroll/services/student_service.py`
+- [x] Faculty module — `src/nexusenroll/services/faculty_service.py`
+- [x] Administrator module — `src/nexusenroll/services/admin_service.py`
 
 ### B2–B3. Apply design patterns — 40%
 - [x] Use a **minimum of 3 distinct** object-oriented design patterns
@@ -134,14 +159,18 @@ Provide **at least one concrete example** in the design for each:
 ### B6. Implement the solution — 20%
 Write a small, **runnable** proof-of-concept application:
 
-- [ ] Implement the **Student** module
-- [ ] Implement the **Faculty** module
-- [ ] Implement the **Administrator** module
-- [ ] Represent the core components defined in the architecture
-- [ ] Show how the design patterns are integrated into all three modules' logic
-- [ ] Include a `main()` function or test classes simulating student / faculty / admin user stories
-- [ ] *(UI to interface the core business tier is **optional**)*
-- [ ] Provide clear comments explaining the code and the role of each design pattern
+> ✅ **Done — `src/nexusenroll/`.** Run with `cd src && python -m nexusenroll.main`
+> (Python 3.10+; no third-party dependencies). Output is four acts: the three
+> modules' user stories, then the three pattern proofs.
+
+- [x] Implement the **Student** module
+- [x] Implement the **Faculty** module
+- [x] Implement the **Administrator** module
+- [x] Represent the core components defined in the architecture — `domain/` is the Business Logic layer, `repositories/` the Data Access layer, split by bounded context as on diagram 01
+- [x] Show how the design patterns are integrated into all three modules' logic
+- [x] Include a `main()` function or test classes simulating student / faculty / admin user stories
+- [x] *(UI to interface the core business tier is **optional**)* — console output only, as permitted
+- [x] Provide clear comments explaining the code and the role of each design pattern — every pattern module opens with a banner naming its GoF roles, the requirement it satisfies, and what breaks without it
 
 ### B7. Documentation — 10%
 Submit a report that includes:
@@ -153,7 +182,7 @@ Submit a report that includes:
 - [ ] Architectural diagrams and justifications — *text ready in `00-architecture-decision.md`; export diagram 01*
 - [ ] Class diagrams for the features, highlighting design patterns used — *export diagrams 02 + 03*
 - [ ] Description of each design pattern's role and implementation — *text ready in `01-design-patterns.md`*
-- [ ] Final, well-commented source code — *blocked on B6*
+- [ ] Final, well-commented source code — *code done in `src/nexusenroll/`; still needs pasting into the report as a listing*
 - [ ] Add title page, table of contents, team member names and student IDs
 - [ ] Include the design-principles section — *text ready in `02-design-principles.md`*
 - [ ] Include the rejected-alternatives sections (architecture + patterns) — *evidence of judgment, cheap marks*
@@ -170,95 +199,95 @@ Submit a report that includes:
 ### 1. Student Module
 
 **Course Catalogue Browse** — *Builder ⑦ builds the query; `CourseSearchQuery.matches()` filters*
-- [ ] Search courses by **department**
-- [ ] Search courses by **course number**
-- [ ] Search courses by **keyword**
-- [ ] Search courses by **instructor**
-- [ ] Display real-time: course name and description
-- [ ] Display real-time: instructor name
-- [ ] Display real-time: available seats vs. total capacity
-- [ ] Display real-time: schedule (days, times, location)
-- [ ] Display real-time: prerequisites
-- [ ] Use case: browse all CS courses for the upcoming semester taught by a specific professor
+- [x] Search courses by **department**
+- [x] Search courses by **course number**
+- [x] Search courses by **keyword**
+- [x] Search courses by **instructor**
+- [x] Display real-time: course name and description
+- [x] Display real-time: instructor name
+- [x] Display real-time: available seats vs. total capacity
+- [x] Display real-time: schedule (days, times, location)
+- [x] Display real-time: prerequisites
+- [x] Use case: browse all CS courses for the upcoming semester taught by a specific professor — demo act 1.1
 
 **Registration and Enrolment** — *Facade ⑥ orchestrates → Strategy ① validates → Command ② commits → Observer ④ notifies*
-- [ ] Add a course to the enrolment list
-- [ ] Drop a course from the enrolment list
-- [ ] Validation — **prerequisite check** (all prerequisites completed)
-- [ ] Validation — **capacity check** (course not full)
-- [ ] Validation — **time conflict check** (no overlap with enrolled courses)
-- [ ] On success: confirm enrolment, update schedule, update academic record
-- [ ] Use case: enrol → check prerequisites → check capacity → confirm & update
+- [x] Add a course to the enrolment list
+- [x] Drop a course from the enrolment list
+- [x] Validation — **prerequisite check** (all prerequisites completed)
+- [x] Validation — **capacity check** (course not full)
+- [x] Validation — **time conflict check** (no overlap with enrolled courses)
+- [x] On success: confirm enrolment, update schedule, update academic record
+- [x] Use case: enrol → check prerequisites → check capacity → confirm & update — demo acts 1.3–1.5
 
 **Personal Schedule Management** — *`StudentSchedule.asCalendarView()`; mutated only inside Command ②*
-- [ ] View current semester schedule
-- [ ] View past semester schedules
-- [ ] Dynamically build and display a calendar-like view of classes
+- [x] View current semester schedule
+- [x] View past semester schedules — `past_schedules()`; the seed only populates Fall 2026, so the demo shows one
+- [x] Dynamically build and display a calendar-like view of classes — demo act 1.6
 
 **Academic Progress Tracking** — *`ProgressTracker` + `DegreeProgram.remainingFor()`*
-- [ ] List completed courses with grades received
-- [ ] Show courses still required for the degree program
+- [x] List completed courses with grades received
+- [x] Show courses still required for the degree program — demo act 1.7
 
 ### 2. Faculty Module
 
 **Class Roster Viewing** — *read-only query across `Enrollment` + `Person`*
-- [ ] View real-time list of students enrolled in own courses
-- [ ] Roster includes student names, IDs, and contact information
+- [x] View real-time list of students enrolled in own courses — a lecturer sees only their own sections
+- [x] Roster includes student names, IDs, and contact information — demo act 2.1
 
 **Grade Submission** — *State ③ drives the lifecycle; `BatchGradeProcessor` isolates per-entry errors*
-- [ ] Enter and submit final grades per student
-- [ ] Grade approval process with a **"Pending"** state before **"Submitted"**
-- [ ] Batch grade submission processing
-- [ ] Update student academic records on submission
-- [ ] Graceful error handling — an invalid grade must not lose other submitted grades
-- [ ] Allow the professor to correct the erroneous entry
+- [x] Enter and submit final grades per student
+- [x] Grade approval process with a **"Pending"** state before **"Submitted"**
+- [x] Batch grade submission processing — demo act 2.2
+- [x] Update student academic records on submission — entry action of `SubmittedState`, demo act 3.1
+- [x] Graceful error handling — an invalid grade must not lose other submitted grades
+- [x] Allow the professor to correct the erroneous entry — `correctEntry()`, legal only in `PartiallyRejectedState`
 
 **Course Information Management** — *State ③ again, on `CourseChangeRequest` (diagram 06 p3)*
-- [ ] Submit request to update course description
-- [ ] Submit request to add prerequisites
-- [ ] Submit request to change course capacity
-- [ ] All such requests require **administrator approval**
+- [x] Submit request to update course description
+- [x] Submit request to add prerequisites
+- [x] Submit request to change course capacity — demo act 2.4
+- [x] All such requests require **administrator approval** — the live section is mutated only on entry to `ApprovedState`
 
 ### 3. Administrator Module
 
 **Course & Program Management** — *`CourseCatalog` CRUD on `Course` / `DegreeProgram`*
-- [ ] Create courses
-- [ ] Edit courses
-- [ ] Delete courses
-- [ ] Define and manage degree programs (required courses and credits)
+- [x] Create courses
+- [x] Edit courses
+- [x] Delete courses — refuses to orphan existing sections
+- [x] Define and manage degree programs (required courses and credits)
 
 **Student & Faculty Management** — *`AccountManager`; force-add composes a rule list without `CapacityRule` (Strategy ①)*
-- [ ] Add student and faculty accounts
-- [ ] Edit student and faculty accounts
-- [ ] Deactivate student and faculty accounts
-- [ ] Manually override enrolment rules (e.g. force-add a student into a full class)
+- [x] Add student and faculty accounts
+- [x] Edit student and faculty accounts
+- [x] Deactivate student and faculty accounts — demo act 3.3
+- [x] Manually override enrolment rules (e.g. force-add a student into a full class) — demo act 3.4, guarded on the administrator's own permission set
 
 **Reporting & Analytics** — *Factory Method ⑤ creates the report; Builder ⑦ builds its criteria*
-- [ ] Report: enrolment statistics by department and semester
-- [ ] Report: faculty workload
-- [ ] Report: course popularity trends
-- [ ] Use case: all Business school courses currently over **90% capacity**
-- [ ] Present report data in a clean, organised format (table / spreadsheet)
+- [x] Report: enrolment statistics by department and semester
+- [x] Report: faculty workload
+- [x] Report: course popularity trends — demo act 3.5
+- [x] Use case: all Business school courses currently over **90% capacity** — demo act 3.6
+- [x] Present report data in a clean, organised format (table / spreadsheet) — `ReportData.asTable()` and `.asCsv()`
 
 ### 4. System-Wide Requirements
 
 **Notification System** — *Observer ④ — see sequence diagram 05 page 2*
-- [ ] Notification mechanism (e.g. email)
-- [ ] Notify students when a waitlisted course becomes available
-- [ ] Notify advisors when an advisee drops a critical course
-- [ ] Notify administrators of system-wide errors
-- [ ] Notification process is **automated and decoupled** from core enrolment logic
+- [x] Notification mechanism (e.g. email) — `EmailChannel` behind a `NotificationChannel` interface
+- [x] Notify students when a waitlisted course becomes available — `WaitlistObserver` ← `SeatReleased`
+- [x] Notify advisors when an advisee drops a critical course — `AdvisorObserver` ← `StudentDropped`, guarded on degree-criticality
+- [x] Notify administrators of system-wide errors — `AdminAlertObserver` ← `SystemError`, demo act 4.6
+- [x] Notification process is **automated and decoupled** from core enrolment logic — demo act 4.3
 
 **Transaction Management** — *Command ② + `TransactionManager.runAtomic()`*
-- [ ] Treat all add/drop enrolment operations as **transactions**
-- [ ] All-or-nothing: enrolment + capacity update + schedule modification succeed together
-- [ ] No partial state changes on failure
+- [x] Treat all add/drop enrolment operations as **transactions**
+- [x] All-or-nothing: enrolment + capacity update + schedule modification succeed together
+- [x] No partial state changes on failure — demo act 4.1 forces a step-3 failure and prints all three unchanged
 
 **Robustness** — *`ValidationResult` aggregation · `IllegalTransition` fail-fast · per-observer exception isolation*
-- [ ] Error-handling strategies
-- [ ] Input validation
-- [ ] Redundancy / recovery mechanisms
-- [ ] Graceful handling of unexpected inputs
+- [x] Error-handling strategies — aggregate validation errors, fail-fast transitions, per-observer isolation
+- [x] Input validation — `Builder.build()` invariants, per-entry grade validation, capacity guards inside `CourseSection`
+- [x] Redundancy / recovery mechanisms — command rollback; a failing observer cannot fail a committed enrolment (demo act 4.4)
+- [x] Graceful handling of unexpected inputs — invalid grades and unenrolled students are rejected per entry, never per batch
 
 **User Interface (design assumptions to document)**
 - [x] Front-end is a single-page application (SPA) communicating via APIs
@@ -270,24 +299,24 @@ Submit a report that includes:
 
 ## 🗓️ Remaining plan — 4 days to deadline (16 → 20 Aug 2026)
 
-Ordered by grade impact per hour. The design is done, so nothing below is blocked on decisions.
+Ordered by grade impact per hour. Design and code are both done, so nothing below is blocked.
 
-### Day 1 — skeleton + the two patterns worth the most
-- [ ] Create the package layout (`domain/`, `patterns/`, `repositories/`, `services/`, `main.py`)
-- [ ] Domain entities as dataclasses, straight off diagram 02
-- [ ] In-memory repositories behind the `I*Repository` interfaces
-- [ ] **Strategy ①** — `ValidationRule` ABC + the three rules
-- [ ] **Command ②** — `EnrollmentCommand` ABC, add/drop, `TransactionManager` with rollback
-- [ ] Seed data: ~8 courses, ~5 students, ~3 faculty, one full section, one with prerequisites
+### Day 1 — skeleton + the two patterns worth the most ✅ DONE
+- [x] Create the package layout (`domain/`, `patterns/`, `repositories/`, `services/`, `main.py`)
+- [x] Domain entities as dataclasses, straight off diagram 02
+- [x] In-memory repositories behind the `I*Repository` interfaces
+- [x] **Strategy ①** — `ValidationRule` ABC + the three rules (plus `CreditLimitRule` as a live Open/Closed demo)
+- [x] **Command ②** — `EnrollmentCommand` ABC, add/drop, `TransactionManager` with rollback
+- [x] Seed data: 8 courses, 5 students, 3 faculty, one full section, one with prerequisites
 
-### Day 2 — the remaining patterns + all three modules
-- [ ] **Observer ④** — publisher + the three observers
-- [ ] **Facade ⑥** — `EnrollmentFacade`, all collaborators constructor-injected
-- [ ] **State ③** — grade lifecycle with `IllegalTransition` on illegal calls
-- [ ] **Factory Method ⑤** — the four reports
-- [ ] **Builder ⑦** — `CourseSearchQueryBuilder` + `CatalogQueryDirector`
-- [ ] Composition root in `main.py` (this is what replaced Singleton — make it visible)
-- [ ] `main.py` user stories for student / faculty / administrator
+### Day 2 — the remaining patterns + all three modules ✅ DONE
+- [x] **Observer ④** — publisher + the three observers (plus `AuditObserver` as the financial-aid stand-in)
+- [x] **Facade ⑥** — `EnrollmentFacade`, all collaborators constructor-injected
+- [x] **State ③** — grade lifecycle with `IllegalTransition` on illegal calls; applied again to `CourseChangeRequest`
+- [x] **Factory Method ⑤** — the four reports
+- [x] **Builder ⑦** — `CourseSearchQueryBuilder` + `CatalogQueryDirector`
+- [x] Composition root — given its own file, `composition_root.py`, with the Singleton reasoning at the top
+- [x] `main.py` user stories for student / faculty / administrator
 
 ### Day 3 — report assembly
 - [ ] Export every diagram (01 and 03 as **PDF → Fit to page**)
@@ -301,9 +330,11 @@ Ordered by grade impact per hour. The design is done, so nothing below is blocke
 - [ ] Confirm the upload actually appears in VLE — do not assume
 
 **Screencast running order** — lead with the three demos that *prove* a pattern rather than describe it:
-1. **Command ② rollback** — force step 3 of `execute()` to raise, then show `enrolledCount` unchanged
-2. **State ③ guard** — call `addEntry()` on a `PendingApproval` submission, show `IllegalTransition`
-3. **Observer ④ decoupling** — drop a course, watch the waitlist notification fire with no enrolment code involved
+All three are already scripted as **Act 4** of `main.py`, so the screencast can simply run the demo:
+
+1. **Command ② rollback** — force step 3 of `execute()` to raise, then show `enrolledCount` unchanged *(act 4.1)*
+2. **State ③ guard** — call `addEntry()` on a `PendingApproval` submission, show `IllegalTransition` *(act 4.2)*
+3. **Observer ④ decoupling** — drop a course, watch the waitlist notification fire with no enrolment code involved *(act 4.3)*; act 4.4 additionally shows a broken observer failing in isolation without failing the drop
 
 Then walk the three modules' user stories, and close on the administrator `>90% capacity` report.
 
@@ -313,8 +344,8 @@ Then walk the three modules' user stories, and close on the administrator `>90% 
 |---|---|---|
 | Architectural Choice & Justification | 15% | ✅ designed |
 | Architectural Diagram & Description | 15% | ✅ designed |
-| **Design Pattern Application** | **40%** | ✅ designed · ⏭️ implement |
-| Implementation & Code Quality | 20% | ⏭️ not started |
+| **Design Pattern Application** | **40%** | ✅ designed · ✅ implemented |
+| Implementation & Code Quality | 20% | ✅ runnable — `cd src && python -m nexusenroll.main` |
 | Documentation | 10% | ⏭️ assemble from DESIGN/ |
 
 ---
