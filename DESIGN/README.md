@@ -24,6 +24,7 @@ Full justification, including why SOA and pure 3-Tier were rejected, is in
 | [`00-architecture-decision.md`](00-architecture-decision.md) | Pattern choice, justification, rejected alternatives, component responsibilities | Part A1–A3 | **30%** |
 | [`01-design-patterns.md`](01-design-patterns.md) | Seven patterns applied (where, why, what breaks without each) **plus the patterns considered and rejected, including Singleton** | Part B2–B3 | **40%** |
 | [`02-design-principles.md`](02-design-principles.md) | Concrete example per principle + traceability matrix | Part B5 | — |
+| [`03-screencast-script.md`](03-screencast-script.md) | Timed shot-by-shot script for the ≤10-minute video, every claim tied to a `file:line` | Submission guideline 3 | — |
 | `diagrams/*.drawio` | All required UML | Part B4 | 15% + |
 
 ## Diagrams
@@ -100,15 +101,17 @@ explanations read better and the 40% criterion rewards exactly that.
 
 ## Remaining work after this design package
 
-- [ ] Part B6 — implement the Python proof-of-concept against these diagrams
+- [x] Part B6 — implement the Python proof-of-concept against these diagrams → `../src/nexusenroll/`
+- [x] Write the screencast script → [`03-screencast-script.md`](03-screencast-script.md)
 - [ ] Part B7 — assemble the report (pull text from `00`, `01`, `02`; export diagrams as images)
 - [ ] Record the ≤10-minute screencast
 - [ ] Upload document + source + video to VLE by **20 August 2026**
 
 The full tickable requirement list is in `../ASSIGNMENT-3-CHECKLIST.md`.
 
-**Screencast tip:** the three most persuasive things to demonstrate live are a Command rollback
+**Screencast:** the three most persuasive things to demonstrate live are a Command rollback
 leaving `enrolledCount` unchanged after a forced failure, an `IllegalTransition` raised when
 `addEntry()` is called on a submission in `PendingApprovalState`, and a waitlist notification
-firing from a drop. Each proves a pattern works
-rather than merely exists.
+firing from a drop. Each proves a pattern works rather than merely exists — and all three are
+already scripted as **Act 4** of `main.py`, so the video can simply run the demo. Shot-by-shot
+timings and code references are in [`03-screencast-script.md`](03-screencast-script.md).

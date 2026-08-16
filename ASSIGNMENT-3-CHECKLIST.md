@@ -325,11 +325,13 @@ Ordered by grade impact per hour. Design and code are both done, so nothing belo
 - [ ] Cross-check every rubric line against this checklist
 
 ### Day 4 — screencast + submit (leave buffer)
-- [ ] Rehearse once, then record ≤ 10 minutes
+- [x] Write the screencast script — `DESIGN/03-screencast-script.md`, timed to 9:40 with every code reference resolved to a real `file:line`
+- [ ] Rehearse once with a stopwatch, then record ≤ 10 minutes
 - [ ] Compress source, upload document + code + video to VLE
 - [ ] Confirm the upload actually appears in VLE — do not assume
 
-**Screencast running order** — lead with the three demos that *prove* a pattern rather than describe it:
+**Screencast** — the full timed script is `DESIGN/03-screencast-script.md`. Summary of the running
+order, leading with the demos that *prove* a pattern rather than describe it:
 All three are already scripted as **Act 4** of `main.py`, so the screencast can simply run the demo:
 
 1. **Command ② rollback** — force step 3 of `execute()` to raise, then show `enrolledCount` unchanged *(act 4.1)*
