@@ -5,3 +5,4 @@ venv/
 *.bkp
 .vscode/
 .idea/
+.claude/settings.local.json
