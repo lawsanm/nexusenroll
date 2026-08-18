@@ -359,9 +359,9 @@ def act_proofs(sys_) -> None:
 
     step("4.5  OBSERVER (4) -- adding a subscriber costs zero enrolment changes")
     out(f"AuditObserver (standing in for the future financial aid system) saw")
-    out(f"{len(sys_.audit.seen)} events without a single line of enrolment code")
-    out("knowing it exists:")
-    for event in sys_.audit.seen[-4:]:
+    out(f"all {len(sys_.audit.seen)} enrol/drop events without a single line of")
+    out("enrolment code knowing it exists:")
+    for event in sys_.audit.seen:
         out(f"  {event}")
 
     step("4.6  System-wide error alerting")

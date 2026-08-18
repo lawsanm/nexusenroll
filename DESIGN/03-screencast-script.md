@@ -147,7 +147,7 @@ whoever implemented a pattern should be the one narrating it (§ 3–7 map onto 
 | Demo act **4.3** — two emails fire | "Tharindu drops BUS-210. The waitlisted student is emailed that a spot opened; the advisor is emailed because it's a degree-critical course." | `main.py:327` |
 | `facade_enrollment.py:190-199` | "And this is all the enrolment code does — publish two events and return. It holds **no reference** to `WaitlistObserver`, `AdvisorObserver` or `EmailChannel`, and never learns whether anything was delivered. That is what the brief means by 'automated and decoupled'." | `facade_enrollment.py:175-200` |
 | Demo act **4.4** | "Now we attach an observer whose mail channel always throws, and drop again. One isolated failure logged — **and the drop still succeeded**. A dead mail server cannot fail a transaction that has already committed." | `main.py:341`; `observer_notifications.py:132-149` |
-| Demo act **4.5** | "This audit subscriber stands in for the future financial aid system. It has seen six events, and not one line of enrolment code knows it exists. Adding it was an `attach()` call — Open/Closed, at runtime." | `main.py:356`; `composition_root.py:171-174` |
+| Demo act **4.5** | "This audit subscriber stands in for the future financial aid system. It has seen all seven enrol and drop events, and not one line of enrolment code knows it exists. Adding it was an `attach()` call — Open/Closed, at runtime." | `main.py:356`; `composition_root.py:171-174` |
 
 ---
 
