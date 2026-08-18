@@ -79,7 +79,7 @@ part-way through was never undone. Fixed by pushing before executing.
 
 | Principle | Look at |
 |---|---|
-| Encapsulation | `CourseSection._enrolled_count`, mutated only via `reserve_seat()` / `release_seat()` |
+| Encapsulation | `CourseSection._enrolled_count`, mutated only via `reserve_seat()` / `release_seat()` / `force_reserve_seat()` — never through a setter |
 | Programming to an Interface | `EnrollmentValidator` — no import of, and no `isinstance` against, any concrete rule |
 | Composition over Inheritance | `CourseSection` composes `TimeSlot`; the validator composes rules instead of subclassing |
 | Single Responsibility | validator / command / transaction manager / publisher are four classes, four reasons to change |

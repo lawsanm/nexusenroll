@@ -236,6 +236,10 @@ def act_admin(sys_) -> None:
     out("")
     out("The override validator is the SAME rule classes with CapacityRule left")
     out("out of the list. There is no 'if admin' branch inside any rule.")
+    out("")
+    out("Two guards had to agree: the rule list decides, and CourseSection's own")
+    out("invariant is waived through force_reserve_seat(). Dropping the rule")
+    out("alone would have failed at step 2 and rolled the force-add back.")
 
     # -- Reporting & Analytics (FACTORY METHOD 5 + BUILDER 7) ---------------
     step("3.5  Reports -- created through the factory, never by name")

@@ -115,6 +115,22 @@ class CourseSection:
             )
         self._enrolled_count += 1
 
+    def force_reserve_seat(self) -> None:
+        """Take a seat the section does not have.
+
+        The requirement "manually override enrolment rules (e.g. force-add a
+        student into a full class)" cannot be met by relaxing a validation rule
+        alone: CapacityRule guards the *decision*, while reserve_seat() guards
+        the *invariant*, and an over-capacity section violates the invariant by
+        definition.  So the bypass gets its own name rather than a boolean
+        parameter on reserve_seat() -- a caller cannot exceed capacity by
+        accident, and every place that can is greppable.
+
+        Still encapsulated: the counter remains private, `enrolled_count` has no
+        setter, and 0 <= enrolled is untouched.  Only the upper bound is waived.
+        """
+        self._enrolled_count += 1
+
     def release_seat(self) -> None:
         if self._enrolled_count == 0:
             raise IllegalState(f"Section {self.section_id} has no seats to release")

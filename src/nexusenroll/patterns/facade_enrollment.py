@@ -207,6 +207,12 @@ class EnrollmentFacade:
         The override is implemented by handing in a DIFFERENT RULE LIST (one
         composed without CapacityRule), not by adding an `if admin` branch
         inside a rule.  That is Strategy plus composition doing the work.
+
+        The swapped rule list is necessary but not sufficient: CourseSection
+        enforces the capacity invariant independently of any rule, so
+        AddCourseCommand honours request.is_override() at step 2 as well.  Two
+        guards, two deliberate decisions -- the section cannot be pushed over
+        capacity by a caller who merely forgot a rule.
         """
         original = self._validator
         try:

@@ -134,9 +134,12 @@ class AddCourseCommand(EnrollmentCommand):
         self._fail_on_step = fail_on_step
 
     def describe(self) -> str:
+        # An over-capacity force-add is exactly the entry an administrator
+        # wants to find later, so the audit line says so.
+        suffix = ", ADMIN OVERRIDE" if self._request.is_override() else ""
         return (
             f"AddCourse(student={self._request.student_id}, "
-            f"section={self._request.section_id})"
+            f"section={self._request.section_id}{suffix})"
         )
 
     def _maybe_fail(self, step: int) -> None:
@@ -165,8 +168,15 @@ class AddCourseCommand(EnrollmentCommand):
         self._completed_steps.append(1)
 
         # -- step 2: "the class capacity is updated" ------------------------
+        # An administrator override skipped CapacityRule at validation time,
+        # but the section still enforces its own invariant -- so the override
+        # has to be honoured HERE too, or the transaction fails at step 2 and
+        # rolls back a force-add that was deliberately authorised.
         self._maybe_fail(2)
-        self._section.reserve_seat()
+        if self._request.is_override():
+            self._section.force_reserve_seat()
+        else:
+            self._section.reserve_seat()
         self._completed_steps.append(2)
 
         # -- step 3: "the schedule is modified" -----------------------------
@@ -254,7 +264,12 @@ class DropCourseCommand(EnrollmentCommand):
             self._schedule.add_section(self._section)
             self._receiver.schedules.save(self._schedule)
         if 2 in self._completed_steps:
-            self._section.reserve_seat()
+            # Restoring the seat this command released, not competing for a new
+            # one -- so it must always succeed.  reserve_seat() would refuse on
+            # a section that a force-add had pushed over capacity, and an
+            # exception raised during rollback strands the partial state that
+            # rollback exists to remove.
+            self._section.force_reserve_seat()
         if 1 in self._completed_steps and self._previous_status is not None:
             self._enrolment.status = self._previous_status
             self._receiver.enrolments.save(self._enrolment)
