@@ -1,7 +1,7 @@
 # Screencast Script — NexusEnroll
 
-**Target runtime: 9 min 40 s** (hard limit 10:00 — the brief's wording is *"should not exceed
-10 minutes"*, so leave the buffer).
+**Target runtime 9:40** (hard limit 10:00 — the brief says the video *"should not exceed 10
+minutes"*, so we keep twenty seconds of buffer).
 
 > **Brief, submission guideline 3, verbatim:**
 > *"A screencast video of the functionality of the implemented solution should be recorded and
@@ -9,200 +9,440 @@
 > should focus on the interaction of the solution using the user interfaces or **test cases to
 > interact with the business logic tier**."*
 
-That last clause sets the whole shape of this video: it is a **demo-led** recording, not a
-slide reading. `main.py` *is* the test-case harness that drives the business logic tier, so the
-spine of the video is one uninterrupted run of it, pausing to show the class behind each result.
+`main.py` **is** the test-case harness the brief asks for, so the video is a single run of it,
+narrated. But the run is only the evidence — **the subject of the video is the seven patterns.**
+Eight of the nine and a half minutes are spent on a pattern; the module tour is compressed to
+the moments where a pattern is visibly doing the work.
 
-Every row below names the **exact file and line** to have on screen, so nobody has to hunt for
-code while recording.
+**How to read this script.** Each segment gives you the clock, what is on screen, and then the
+narration written out as continuous speech. Read it in your own words — it is written to be
+*spoken*, not recited. Square brackets are stage directions, never said out loud.
+
+**Split the narration across the team.** The 40% criterion rewards first-hand explanation, so
+whoever implemented a pattern narrates that pattern's segment (the split is in
+`DESIGN/README.md`).
 
 ---
 
 ## Before you hit record
 
-- [ ] `cd src && python -m nexusenroll.main` runs clean end to end (it does — verify anyway)
-- [ ] Terminal font at **16pt+**, window ~110 columns; anything smaller is unreadable at 1080p
-- [ ] Editor open with these files already in tabs, in this order:
-      `main.py` · `facade_enrollment.py` · `strategy_validation.py` · `command_enrollment.py` ·
-      `state_grades.py` · `observer_notifications.py` · `factory_reports.py` ·
-      `builder_search.py` · `composition_root.py`
-- [ ] Diagram 01 and diagram 03 exported to PDF and open in a viewer (for sections 1 and 8)
-- [ ] Editor line numbers **on** — the whole script depends on them
-- [ ] Close Slack/mail; silence notifications
-- [ ] Do one full dry run with a stopwatch before the take that counts
-
-**Split the narration across the team.** The 40% criterion rewards first-hand explanation, so
-whoever implemented a pattern should be the one narrating it (§ 3–7 map onto the work split in
-`DESIGN/README.md`).
+- [ ] `cd src && python -m nexusenroll.main` runs clean end to end
+- [ ] Terminal at **16pt+**, ~110 columns — anything smaller is unreadable at 1080p
+- [ ] Editor line numbers **on**; this whole script depends on them
+- [ ] Tabs open in narration order: `main.py` · `builder_search.py` · `facade_enrollment.py` ·
+      `strategy_validation.py` · `state_grades.py` · `state_course_change.py` ·
+      `factory_reports.py` · `command_enrollment.py` · `observer_notifications.py` ·
+      `composition_root.py`
+- [ ] Diagrams 01, 03 and 05 open as PDFs in a viewer (`DESIGN/diagrams/pdf/`)
+- [ ] Notifications silenced, Slack and mail closed
+- [ ] One full dry run with a stopwatch before the take that counts
 
 ---
 
-## § 1 — Title and architecture · 0:00 → 0:45 · *45 s*
+## 1 · Opening — the architecture in forty seconds
+**0:00 → 0:40** · *title slide, then diagram 01*
 
-| On screen | Say | Code / artefact |
-|---|---|---|
-| Title slide: project, module code, all team names + student IDs | "NexusEnroll — a modernisation of the university's twenty-year-old LegacyEnroll monolith. Team members are on screen." | title slide |
-| Diagram 01, full canvas | "System level, we chose **microservices**; inside each service, **3-Tier**. Microservices answer the scalability and future-integration requirements. The internal 3-tier layering gives us a named Business Logic layer — which is what this whole video is about." | `DESIGN/diagrams/01-architecture.drawio` |
-| Point at the broker, then the Notification Service | "Services talk synchronously through the API Gateway and asynchronously over the message broker. That broker is what makes notification *architecturally* decoupled, not decoupled by convention." | same |
+*[Title slide: project name, module code, every team member with student ID.]*
 
-> ⏱ **Discipline point.** 45 seconds. Do not narrate the rejected alternatives here — they are
-> in the report and they will eat two minutes you cannot spare.
+> NexusEnroll is our replacement for LegacyEnroll, the university's twenty-year-old enrolment
+> monolith. We're the team on screen.
 
----
+*[Switch to diagram 01, full canvas.]*
 
-## § 2 — The code mirrors the architecture · 0:45 → 1:15 · *30 s*
+> Two architectural decisions, and then we'll spend the rest of the video on the design.
+>
+> At system level we chose **microservices** — six of them — because the requirements are about
+> scaling registration week and integrating systems that don't exist yet. Inside each service we
+> layered **3-Tier**, and that second choice is the one that matters today: it gives us a named
+> **Business Logic layer**, which is exactly the tier the brief asks this video to demonstrate.
+>
+> *[Point at the broker, then the Notification Service.]* Services call each other synchronously
+> through the API Gateway, and publish asynchronously over the message broker. That broker is why
+> notification is decoupled *architecturally*, not just by convention — and you'll see the same
+> shape in the code, in the Observer pattern, about seven minutes from now.
 
-| On screen | Say | Code |
-|---|---|---|
-| File tree of `src/nexusenroll/` | "The package layout is the architecture. `domain` is the Business Logic layer, `repositories` is Data Access, `services` holds the three modules the brief names." | `src/nexusenroll/` |
-| Open `repositories/interfaces.py`, scroll to the header comment | "These repository interfaces are **declared in the business layer** and implemented in the data layer, so dependencies point inward at the domain. That's Dependency Inversion at the tier boundary." | `repositories/interfaces.py:1-18`, `IEnrollmentRepository` at **:23** |
-| Terminal: `cd src && python -m nexusenroll.main` — let the header print, then stop reading aloud | "One command, no dependencies, no database. Four acts: the three modules, then the proofs." | `main.py:375` |
-
----
-
-## § 3 — Student module · 1:15 → 3:05 · *1 min 50 s*
-
-### 3a. Catalogue search — Builder ⑦ · *40 s*
-
-| On screen | Say | Code |
-|---|---|---|
-| Demo act **1.1** output table | "The §3.1 use case verbatim: browse all Computer Science courses this semester taught by one professor. Note the columns — name, description, instructor, **available seats versus total capacity**, schedule, prerequisites. Every real-time field the requirement lists." | `main.py:73` |
-| `builder_search.py`, `CatalogQueryDirector` | "Four optional filters is sixteen combinations. Rather than a seven-parameter search with nulls everywhere, the **Builder** assembles the query step by step and the **Director** holds the reusable recipes." | `builder_search.py:212`, recipe at **:244** |
-| Demo act **1.2** | "And `build()` validates. An occupancy of 1.7 is refused at construction — **an invalid query object can never exist**. Fail Fast on a value object." | `builder_search.py:189-210`; demo `main.py:88` |
-
-### 3b. Enrolment and validation — Facade ⑥ + Strategy ① · *45 s*
-
-| On screen | Say | Code |
-|---|---|---|
-| Demo act **1.3**: seats 0/30 → 1/30 | "Kavith has completed CS-201, so he enrols. One method call from the client's point of view." | `main.py:99` |
-| `facade_enrollment.py`, `enrol()` | "That one call is the **Facade**. Behind it: validate, build a command, run it atomically, publish an event. The API layer holds no business rules, so the web SPA and a future mobile app consume exactly the same operation." | `facade_enrollment.py:109` |
-| Demo act **1.4**, both refusals | "Dilini hasn't done the prerequisite — refused. Isuru has a Monday clash — refused, and it names the clashing slot." | `main.py:106` |
-| `strategy_validation.py`, `validate_all()` | "Three rules, three classes, one **Strategy** interface. Look at this loop — there is **no early return**. It iterates to the end and merges, so a student sees *every* problem at once, not just the first. That is precisely why we rejected Decorator: a decorator chain short-circuits." | `strategy_validation.py:259-269`; interface at **:64** |
-
-### 3c. Waitlist, schedule, progress · *25 s*
-
-| On screen | Say | Code |
-|---|---|---|
-| Demo act **1.5** | "BUS210-A is full. Nethmi fails **only** the capacity rule, so she's eligible — she gets queued at position 1 rather than rejected. Collapsing 'full' and 'ineligible' into one failure state would make the waitlist requirement unimplementable." | `main.py:115`; branch at `facade_enrollment.py:132-139` |
-| Demo acts **1.6** and **1.7** | "Schedule as a calendar view, then completed courses with grades and what's still required for the degree — 40% complete, 54 credits outstanding." | `main.py:122`, `main.py:130` |
+> ⏱ **Discipline point.** Forty seconds, and do **not** narrate the rejected architectures. They
+> are in `00-architecture-decision.md` and they will eat two minutes you cannot spare.
 
 ---
 
-## § 4 — Faculty module · 3:05 → 4:35 · *1 min 30 s*
+## 2 · The code is the design
+**0:40 → 1:05** · *file tree, then `composition_root.py`*
 
-| On screen | Say | Code |
-|---|---|---|
-| Demo act **2.1** | "Real-time roster with names, IDs and contact details. A lecturer sees only their own sections." | `main.py:147`; `services/faculty_service.py:53` |
-| Demo act **2.2** — the three-row batch | "Here's the §3.2 use case. Three grades submitted: one valid, one with an invalid letter, one for a student not enrolled. Two rejected — **and the valid one survives**." | `main.py:153` |
-| `state_grades.py`, `BatchGradeProcessor.validate_batch` | "Validation runs **per entry, not per batch**. One bad letter grade in a roster of two hundred rejects one entry, not two hundred. That is the 'without losing other submitted grades' requirement, structurally." | `state_grades.py:216-239` |
-| Demo act **2.3** | "Draft to PendingApproval — the 'Pending' state the brief names by name." | `main.py:169` |
-| `state_grades.py`, the four state classes | "The **State** pattern. Each ConcreteState decides for itself which operations are legal. `DraftState` permits `addEntry`; `PendingApprovalState` permits approve and reject but **refuses** `addEntry`; `PartiallyRejectedState` permits corrections while keeping accepted grades; `SubmittedState` is terminal — and note its body is empty. That emptiness *is* the behaviour." | `state_grades.py:97`, **:115**, **:141**, **:167** |
-| Demo act **2.4** | "Course change request: capacity 3 → 5. It's pending, and the live section is **still 3**. The catalogue is untouched until an administrator approves — enforced by the state machine, not by convention." | `main.py:176`; `state_course_change.py:74` |
+*[File tree of `src/nexusenroll/`.]*
 
----
+> The package layout is the architecture. `domain` is the Business Logic layer, `repositories` is
+> Data Access, `services` holds the three modules the brief names — and `patterns` is where the
+> seven patterns live, one file each, so nothing is hidden.
 
-## § 5 — Administrator module · 4:35 → 6:10 · *1 min 35 s*
+*[Open `composition_root.py`, scroll to line 138.]*
 
-| On screen | Say | Code |
-|---|---|---|
-| Demo act **3.1** | "Administrator approves the batch. State goes to Submitted and the academic records update — that's the **entry action** of `SubmittedState`, not something the caller had to remember to do." | `main.py:198`; `state_grades.py:241` |
-| Demo act **3.2** — capacity 3 → 5, waitlist email fires | "Approving the change applies it to the live section. And watch — raising the capacity released a seat, so the **existing** waitlist observer fired with no extra code. Two independently designed features composed because both are event-driven." | `main.py:205`; `state_course_change.py:140-160` |
-| Demo act **3.4** | "Force-add into a full class. The standard student path is refused. A clerk without override rights is refused. The registrar succeeds." | `main.py:226` |
-| `composition_root.py:194` | "**This one line is the override.** It's the same rule classes with `CapacityRule` left out of the list. There is no `if admin` branch anywhere inside a rule — the administrator path simply composes a different Strategy list." | `composition_root.py:194`; consumed at `services/admin_service.py:126` and **:149** |
-| Demo act **3.5** — three report tables | "Enrolment statistics by department and semester, faculty workload, course popularity." | `main.py:241` |
-| `factory_reports.py`, `create_report` | "All four created through a **Factory Method**. The administrator module asks by *kind* and receives a `Report` — it never names a concrete class, so a fifth report type touches no calling code." | `factory_reports.py:253`; registry at `composition_root.py:217-234` |
-| Demo act **3.6** | "And the §3.3 use case: Business school courses over 90% capacity — BUS-330 at 100%. Factory Method created the report; **Builder** built its criteria, using the same builder as student search. Then the same data as CSV, for the 'table or spreadsheet' requirement." | `main.py:252`; `factory_reports.py:192`, `builder_search.py:255` |
+> Everything is wired in one place. `build_system()` constructs the object graph bottom-up and
+> injects it — no globals, no service locator, no `getInstance()` anywhere in the codebase. Keep
+> this file in mind; we come back to it twice, and the second time it's to explain a pattern we
+> deliberately **didn't** use.
+
+*[Run `python -m nexusenroll.main`, let the header print, then pause the run.]*
 
 ---
 
-## § 6 — The proofs · 6:10 → 9:00 · *2 min 50 s* ⭐ **the most valuable section**
+## 3 · Builder — an invalid query cannot exist
+**1:05 → 1:50** · *demo acts 1.1 and 1.2, then `builder_search.py`*
 
-> Lead with these if you have to cut. A pattern shown **working** outscores a pattern described.
+*[Demo act 1.1 output table on screen — `main.py:73`.]*
 
-### 6a. Command ② rollback · *60 s*
+> This is section 3.1 of the requirements, word for word: browse all Computer Science courses this
+> semester taught by one professor. Look at the columns — title, description, instructor,
+> **available seats against total capacity**, schedule, prerequisites. Every real-time field the
+> requirement lists.
 
-| On screen | Say | Code |
-|---|---|---|
-| `command_enrollment.py`, `execute()` steps 1–3 | "The requirement says an enrolment either wholly succeeds or wholly fails. These three numbered steps are **exactly** the three state changes the brief enumerates: create the enrolment, reserve the seat, modify the schedule." | `command_enrollment.py:150-176` |
-| Demo act **4.1**, BEFORE line | "Zero, zero, zero. Now we force step 3 to raise — steps 1 and 2 will already have changed state." | `main.py:275` |
-| AFTER line: `NO PARTIAL STATE SURVIVED: True` | "All three back to zero. `undo()` ran in reverse — 3, 2, 1 — on every completed step." | — |
-| `command_enrollment.py:296-309` | "And here's the mechanism. The command is pushed onto the stack **before** it executes, so a command that fails part-way through is still on the stack to be undone. **We got this wrong the first time** — we pushed after success, the proof printed `False`, and the demo caught a real bug in our own transaction manager. It's in the commit history." | `command_enrollment.py:305-308` |
-| Audit log lines | "Same structure gives the administrator a replayable audit log for free." | `command_enrollment.py:321` |
+*[Open `builder_search.py`, scroll to `CatalogQueryDirector` at `:212`, then the recipe at `:244`.]*
 
-> 💡 **Say the bug out loud.** An examiner hearing "our own demo caught a real defect and here's
-> the fix" learns the proof-of-concept is genuinely executable. Hiding it gains nothing.
+> Four optional filters means sixteen possible combinations. The alternative was a search method
+> with seven parameters and nulls at every call site. Instead the **Builder** assembles the query
+> one step at a time, and the **Director** — this class — holds the recipes. `department_taught_by`
+> is the one you just watched run.
 
-### 6b. State ③ illegal transition · *40 s*
+*[Scroll to `build()` at `:189`. Then show demo act 1.2 — `main.py:88`.]*
 
-| On screen | Say | Code |
-|---|---|---|
-| Demo act **4.2**, both `IllegalTransition` lines | "`addEntry` on a **Submitted** batch — refused. `addEntry` on a **PendingApproval** batch — refused. The entry set is locked while an administrator decides." | `main.py:304` |
-| `state_grades.py:71-95` | "Nothing in `GradeSubmission` checks a status flag. The base state's defaults raise `IllegalTransition`, and a ConcreteState overrides **only** what's legal in it. So an unhandled operation fails loudly instead of silently corrupting a batch of two hundred grades. Fail Fast." | `state_grades.py:60-95` |
-
-### 6c. Observer ④ decoupling · *70 s*
-
-| On screen | Say | Code |
-|---|---|---|
-| Diagram 05 page 2, the red boundary | "This is the clearest single image in our design pack. Left of the red line, the enrolment transaction. Right of it, the notification fan-out." | `DESIGN/diagrams/05-sequence-diagrams.drawio` p2 |
-| Demo act **4.3** — two emails fire | "Tharindu drops BUS-210. The waitlisted student is emailed that a spot opened; the advisor is emailed because it's a degree-critical course." | `main.py:327` |
-| `facade_enrollment.py:190-199` | "And this is all the enrolment code does — publish two events and return. It holds **no reference** to `WaitlistObserver`, `AdvisorObserver` or `EmailChannel`, and never learns whether anything was delivered. That is what the brief means by 'automated and decoupled'." | `facade_enrollment.py:175-200` |
-| Demo act **4.4** | "Now we attach an observer whose mail channel always throws, and drop again. One isolated failure logged — **and the drop still succeeded**. A dead mail server cannot fail a transaction that has already committed." | `main.py:341`; `observer_notifications.py:132-149` |
-| Demo act **4.5** | "This audit subscriber stands in for the future financial aid system. It has seen all seven enrol and drop events, and not one line of enrolment code knows it exists. Adding it was an `attach()` call — Open/Closed, at runtime." | `main.py:356`; `composition_root.py:171-174` |
+> And here's the part that makes Builder worth the classes. `build()` validates before it hands
+> anything back. Watch — we ask for a minimum occupancy of one-point-seven. It's refused at
+> construction. **An invalid query object never comes into existence**, so nothing downstream ever
+> has to defend against one. Fail Fast, on a value object.
 
 ---
 
-## § 7 — Singleton rejected · 9:00 → 9:30 · *30 s*
+## 4 · Facade — one call, four collaborators
+**1:50 → 2:25** · *demo act 1.3, then `facade_enrollment.py`*
 
-| On screen | Say | Code |
-|---|---|---|
-| Diagram 03, rejected-patterns panel | "One design decision worth thirty seconds. Exactly one observer registry must exist — a second one would swallow notifications silently. The obvious answer is Singleton." | `DESIGN/diagrams/03-class-diagram-patterns.drawio` |
-| `composition_root.py:157-174` | "We rejected it. Singleton conflicts with SRP, DIP and OCP — and we'd already committed to constructor injection everywhere, which means the single-instance guarantee was coming from **the wiring, not the pattern**. So: one publisher, constructed here, injected everywhere. Same guarantee, no global access point, every dependency visible in a constructor. And a Python module is already a singleton, so `getInstance()` would have been un-idiomatic too." | `composition_root.py:1-40` (header) and **:157** |
+*[Demo act 1.3 — `main.py:99`. Seats go 0/30 → 1/30.]*
+
+> Kavith has completed CS-201, so he enrols. From the client's side that is one method call.
+
+*[Open `facade_enrollment.py`, `enrol()` at `:109`. Scroll slowly through to `:173`.]*
+
+> That one call is the **Facade**, and everything the subsystem does is behind it: validate
+> through Strategy, at line 124. Wrap the state changes in a Command and run them atomically, at
+> 146. Publish events to the Observers — line 163, and note it is strictly *after* the commit.
+>
+> The consequence is that the API layer holds **no business rules at all**. The web SPA and the
+> future mobile app the brief mentions call this same method and get the same guarantees. Three
+> of our seven patterns meet inside this one function, and that's deliberate — the Facade is what
+> keeps the client from ever knowing they exist.
 
 ---
 
-## § 8 — Close · 9:30 → 9:40 · *10 s*
+## 5 · Strategy — every rule, every time
+**2:25 → 3:10** · *demo act 1.4, then `strategy_validation.py`*
 
-| On screen | Say |
-|---|---|
-| Diagram 03 full canvas, or the closing table `main.py` prints | "Seven patterns, all three GoF families, every one traceable to a sentence in the requirements. Thank you." |
+*[Demo act 1.4 — `main.py:106`. Both refusals visible.]*
+
+> Two refusals. Dilini hasn't completed the prerequisite. Isuru has a Monday clash — and notice
+> the message names the section he's clashing with, rather than just saying "conflict".
+
+*[Open `strategy_validation.py`. Interface at `:64`, then the four rules at `:87`, `:128`, `:159`,
+`:189`.]*
+
+> One **Strategy** interface, four rule classes: prerequisites, capacity, time conflict, credit
+> limit. Each one is a self-contained policy that knows nothing about the others.
+
+*[Scroll to `validate_all()` at `:259`. Hold on the loop for a beat before speaking.]*
+
+> This loop is the whole pattern, and I want to point at one thing in it: **there is no early
+> return.** It runs every rule to the end and merges the results, so a student sees *all* their
+> problems at once instead of fixing one and resubmitting to discover the next.
+>
+> That single property is why we rejected Decorator here, which was the obvious alternative — a
+> decorator chain short-circuits on the first failure. And it's why adding the credit-limit rule
+> later cost us one line in the composition root and zero edits to anything else. Open/Closed,
+> concretely.
 
 ---
 
-## Pattern → demo act → source, at a glance
+## 6 · The rest of the student module
+**3:10 → 3:35** · *demo acts 1.5, 1.6, 1.7 — narrate over the scroll, don't stop*
+
+*[Act 1.5 — `main.py:115`.]*
+
+> BUS210-A is full. Nethmi fails **only** the capacity rule, so she's still eligible — she gets
+> queued at position one instead of rejected. That branch is at `facade_enrollment.py:132`, and it
+> only exists because Strategy reports *which* rules failed. Collapse "full" and "ineligible" into
+> one failure and the waitlist requirement becomes unimplementable.
+
+*[Acts 1.6 and 1.7 — `main.py:122` and `:130`. Let them scroll.]*
+
+> Personal schedule as a calendar view, then academic progress — completed courses with grades,
+> what's still required for the degree, forty percent complete, fifty-four credits outstanding.
+
+---
+
+## 7 · State, part one — the grade lifecycle
+**3:35 → 4:35** · *demo acts 2.2 and 2.3, then `state_grades.py`*
+
+*[Act 2.1 — `main.py:147` — scroll past with one sentence.]*
+
+> Real-time roster with contact details; a lecturer sees only their own sections.
+
+*[Act 2.2 — `main.py:153`. The three-row batch.]*
+
+> Now section 3.2. Three grades submitted at once: one valid, one with an invalid letter, one for
+> a student who isn't enrolled. Two are rejected — **and the valid one survives.**
+
+*[Open `state_grades.py` at `BatchGradeProcessor.validate_batch`, `:216`.]*
+
+> Validation runs per entry, not per batch. One bad letter in a roster of two hundred rejects one
+> entry, not two hundred. That's the requirement's "without losing the other submitted grades",
+> expressed structurally rather than as a promise.
+
+*[Act 2.3 — `main.py:169`, then the state classes at `:60`, `:97`, `:115`, `:141`, `:167`.]*
+
+> Draft moves to PendingApproval — the "Pending" state the requirement names.
+>
+> This is the **State** pattern, and each concrete state decides for itself what's legal.
+> `DraftState` allows entries to be added. `PendingApprovalState` allows approve and reject, and
+> **refuses** `addEntry` — not by checking a flag, but by simply not implementing it, so the base
+> class refuses on its behalf. `PartiallyRejectedState` lets a professor correct the bad rows while
+> the accepted grades stay put. And `SubmittedState`, at 167 — look at the body. It's empty. That
+> emptiness *is* the behaviour: it's terminal, so every operation falls through to a refusal.
+
+---
+
+## 8 · State, part two — and the entry action
+**4:35 → 5:15** · *demo acts 2.4 and 3.1–3.2*
+
+*[Act 2.4 — `main.py:176`.]*
+
+> Second application of the same pattern. A lecturer requests a capacity change on BUS210-A,
+> three to five. The request is pending — and the live section is **still three**. The catalogue is
+> untouched until an administrator approves, and that's enforced by
+> `state_course_change.py:74`, not by anybody remembering to check.
+
+*[Act 3.1 — `main.py:198`.]*
+
+> The administrator approves the batch. State goes to Submitted, and the academic records update
+> — that's the **entry action** of `SubmittedState`, at `state_grades.py:241`. The caller didn't
+> have to remember to do it; entering the state is what does it.
+
+*[Act 3.2 — `main.py:205`. Capacity 3 → 5, and a waitlist email fires above it.]*
+
+> Approving the change applies it to the live section. And watch what came free: raising the
+> capacity released a seat, so the **existing** waitlist observer fired, with no code written for
+> this case. Two features designed independently composed correctly because both are event-driven.
+
+---
+
+## 9 · Strategy again — the override is a different list
+**5:15 → 5:45** · *demo act 3.4, then `composition_root.py:194`*
+
+*[Act 3.4 — `main.py:226`. Three lines of output.]*
+
+> Force-add into a full class. The normal student path is refused. A clerk without override
+> rights is refused. The registrar succeeds.
+
+*[Open `composition_root.py`, hold on line 194.]*
+
+> **This one line is the override.** It's the same rule objects as the student list with
+> `CapacityRule` left out. There is no `if admin` branch inside any rule anywhere in this codebase
+> — the administrator path just composes a different Strategy list.
+>
+> One honest detail: the rule list alone wasn't enough. `CourseSection` enforces its own capacity
+> invariant, so the command has to honour the override at step two as well. Two guards had to
+> agree, which is what you'd want — a caller who merely forgets a rule can't push a section over
+> capacity.
+
+---
+
+## 10 · Factory Method — asking by kind, not by name
+**5:45 → 6:25** · *demo acts 3.5 and 3.6, then `factory_reports.py`*
+
+*[Act 3.5 — `main.py:245`. Three report tables.]*
+
+> Enrolment statistics by department and semester, faculty workload, course popularity.
+
+*[Open `factory_reports.py` at `create_report`, `:253`; then the registry at
+`composition_root.py:217`.]*
+
+> All four report kinds come through a **Factory Method**. The administrator module asks for a
+> *kind* and receives a `Report` — it never names a concrete class, so adding a fifth report type
+> touches no calling code at all. The factory itself doesn't know what a report needs either; each
+> registration closes over its own repositories.
+
+*[Act 3.6 — `main.py:256`.]*
+
+> And this is section 3.3 of the brief: Business school courses running over ninety percent
+> capacity. BUS-330 at a hundred. Factory Method created the report, and **Builder** built its
+> criteria — the same builder and the same director the student catalogue search used, four
+> minutes ago. Then the same data as CSV, which is the requirement's "table or spreadsheet".
+
+---
+
+## 11 · Proof one: Command rolls back
+**6:25 → 7:25** · ⭐ *demo act 4.1 and `command_enrollment.py`*
+
+> The last three minutes are the ones that matter most, so if we've run long, we've cut something
+> else to protect them. Everything so far showed patterns *existing*. These show them **working**.
+
+*[Open `command_enrollment.py`, `execute()` at `:153`. Show the three numbered steps.]*
+
+> The requirement says an enrolment must either wholly succeed or wholly fail. These three
+> numbered steps are exactly the three state changes the brief enumerates: create the enrolment
+> record, reserve the seat, update the student's schedule. And every one of them records what it
+> did, so `undo()` at line 188 can reverse precisely that much.
+
+*[Act 4.1 — `main.py:279`. Read the BEFORE line.]*
+
+> Zero, zero, zero. Now we force step three to raise — so steps one and two will already have
+> changed state when it blows up.
+
+*[The AFTER line: `NO PARTIAL STATE SURVIVED: True`.]*
+
+> All three back to zero. `undo()` ran in reverse — three, two, one — over every step that had
+> completed.
+
+*[Open `TransactionManager.run_atomic` at `:306`; hold on the comment at `:314`.]*
+
+> Here's the mechanism, and here's the bit worth your attention. The command is pushed onto the
+> stack **before** it executes, so a command that dies part-way through is still on the stack to be
+> undone.
+>
+> **We got that wrong the first time.** We pushed after success, this proof printed `False`, and
+> our own demo caught a real bug in our own transaction manager. It's in the commit history. We're
+> telling you because it's the clearest evidence we have that this is a running proof of concept
+> and not a diagram with code next to it.
+
+*[Audit log lines at the end of act 4.1.]*
+
+> And because every operation is a Command object with a `describe()`, the administrator gets a
+> replayable audit log for free — `audit_log()` at line 336.
+
+---
+
+## 12 · Proof two: State refuses loudly
+**7:25 → 7:55** · *demo act 4.2 and `state_grades.py:60`*
+
+*[Act 4.2 — `main.py:308`. Both `IllegalTransition` lines.]*
+
+> `addEntry` on a **Submitted** batch — refused. `addEntry` on a **PendingApproval** batch —
+> refused. The entry set is locked while an administrator is deciding.
+
+*[Scroll to `GradeState` at `:60`, the defaults at `:78`–`:90`.]*
+
+> And nothing in `GradeSubmission` checked a status flag to do that. The base state's default for
+> every operation is to raise `IllegalTransition`, and a concrete state overrides **only** what's
+> legal within it. So an operation nobody thought about fails loudly, immediately, instead of
+> silently corrupting a batch of two hundred grades. That's the safe default, and it's a
+> consequence of the pattern rather than of discipline.
+
+---
+
+## 13 · Proof three: Observer, and who doesn't know about whom
+**7:55 → 9:05** · *demo acts 4.3–4.5, diagram 05, `observer_notifications.py`*
+
+*[Diagram 05 page 2. Point at the red boundary.]*
+
+> This is the clearest single image in our design pack. Left of the red line, the enrolment
+> transaction. Right of it, the notification fan-out. Nothing crosses back.
+
+*[Act 4.3 — `main.py:331`. Two emails fire.]*
+
+> Tharindu drops BUS-210. The waitlisted student is emailed that a seat opened. The advisor is
+> emailed because it's a degree-critical course.
+
+*[Open `facade_enrollment.py:190`–`:198`.]*
+
+> And this is everything the enrolment code does about it: publish two events, return. It holds
+> **no reference** to `WaitlistObserver`, to `AdvisorObserver`, or to any email channel, and it
+> never finds out whether anything was delivered. That's what the brief means by "automated and
+> decoupled" — not "we call the notifier last".
+
+*[Act 4.4 — `main.py:345`.]*
+
+> Now the hard case. We attach an observer whose mail channel always throws, and drop again. One
+> isolated failure, logged — **and the drop still succeeded.** `publish()` at line 132 catches per
+> subscriber, because a dead mail server must not be able to fail a transaction that has already
+> committed.
+
+*[Act 4.5 — `main.py:360`.]*
+
+> Last one. This audit subscriber stands in for the financial aid system the brief says will
+> integrate later. It has seen every enrol and every drop event in this entire run, and not one
+> line of enrolment code knows it exists. Adding it was a single `attach()` call in the composition
+> root. That's Open/Closed — at runtime, with no recompilation and no edit to a single existing
+> class.
+
+---
+
+## 14 · The pattern we rejected
+**9:05 → 9:30** · *diagram 03 rejected-patterns panel, then `composition_root.py:157`*
+
+*[Diagram 03, the rejected-patterns panel.]*
+
+> One decision worth twenty-five seconds, because it's the one we argued about most. Exactly one
+> notification publisher must exist — a second one would swallow notifications silently, and
+> nobody would ever see an error. The textbook answer is Singleton.
+
+*[`composition_root.py:157`.]*
+
+> We rejected it. Singleton gives a class a second responsibility, its own lifecycle, which breaks
+> SRP; it's a global access point, which hides dependencies and breaks DIP; and it's hard to
+> substitute, which breaks OCP. And we'd already committed to constructor injection everywhere —
+> which means the single-instance guarantee was coming from **the wiring, not the pattern**.
+>
+> So: one publisher, constructed on this line, injected everywhere. Same guarantee, no global
+> state, and every dependency in the system is visible in a constructor signature. The reasoning is
+> written up in section 6 of `01-design-patterns.md` — we thought the rejection was worth
+> documenting as carefully as the seven we kept.
+
+---
+
+## 15 · Close
+**9:30 → 9:40**
+
+*[Diagram 03, full canvas — or the closing table `main.py` prints.]*
+
+> Seven patterns, all three GoF families, every one of them traceable to a sentence in the
+> requirements and demonstrated running. Thank you.
+
+---
+
+## Pattern → segment → source
 
 Pin this next to the recording setup.
 
-| # | Pattern | Demo act | Class structure | Script § |
+| # | Pattern | Segment | Demo act | Where it lives |
 |---|---|---|---|---|
-| ① | **Strategy** | 1.4, 3.4 | `patterns/strategy_validation.py:64` (interface), `:236` (context), `:259` (the loop) | 3b, 5 |
-| ② | **Command** | 1.3, **4.1** | `patterns/command_enrollment.py:90`, `:111` (`execute` at `:150`), `:279` (`run_atomic` at `:291`) | 6a |
-| ③ | **State** | 2.2–2.4, 3.1–3.2, **4.2** | `patterns/state_grades.py:60`, `:97`, `:115`, `:141`, `:167`; `patterns/state_course_change.py:40` | 4, 6b |
-| ④ | **Observer** | **4.3**–4.6 | `patterns/observer_notifications.py:106` (subject, `publish` at `:132`), `:151`, `:186`, `:227` | 6c |
-| ⑤ | **Factory Method** | 3.5, 3.6 | `patterns/factory_reports.py:239` (`create_report` at `:253`), products at `:104`–`:192` | 5 |
-| ⑥ | **Facade** | 1.3, 1.5, 4.1, 4.3 | `patterns/facade_enrollment.py:79` (`enrol` at `:109`, `drop` at `:175`) | 3b, 6c |
-| ⑦ | **Builder** | 1.1, 1.2, 3.6 | `patterns/builder_search.py:114`, `:140` (`build` at `:189`), `:212` (director) | 3a, 5 |
-| — | ~~Singleton~~ | — | replaced by `composition_root.py:157` | 7 |
+| ① | **Strategy** | 5, 9 | 1.4, 3.4 | `strategy_validation.py:64` interface · `:236` context · `:259` the loop · override at `composition_root.py:194` |
+| ② | **Command** | 11 | 1.3, **4.1** | `command_enrollment.py:90` interface · `:111` (`execute` `:153`, `undo` `:188`) · `:294` invoker (`run_atomic` `:306`) |
+| ③ | **State** | 7, 8, 12 | 2.2–2.4, 3.1–3.2, **4.2** | `state_grades.py:60`, `:97`, `:115`, `:141`, `:167` · `state_course_change.py:40`, `:74` |
+| ④ | **Observer** | 13 | **4.3**–4.6 | `observer_notifications.py:106` subject (`publish` `:132`) · observers `:151`, `:186`, `:227`, `:250` |
+| ⑤ | **Factory Method** | 10 | 3.5, 3.6 | `factory_reports.py:239` (`create_report` `:253`) · products `:104`–`:192` · registry `composition_root.py:217` |
+| ⑥ | **Facade** | 4 | 1.3, 1.5, 4.1, 4.3 | `facade_enrollment.py:79` (`enrol` `:109`, `drop` `:175`, `force_add` `:202`) |
+| ⑦ | **Builder** | 3, 10 | 1.1, 1.2, 3.6 | `builder_search.py:114` interface · `:140` builder (`build` `:189`) · `:212` director |
+| — | ~~Singleton~~ | 14 | — | rejected; replaced by `composition_root.py:157` |
 
 ---
 
 ## If you run long — cut in this order
 
-1. § 5 account management chatter (act 3.3) — **the demo already prints it**, just don't narrate
-2. § 3c schedule/progress narration — let acts 1.6 and 1.7 scroll silently
-3. § 4 roster commentary (act 2.1) — one sentence, not three
-4. § 1 architecture — down to 30 s, pointing only at the broker
+1. **Segment 6** entirely. Let acts 1.5–1.7 scroll silently; they carry no pattern.
+2. **Segment 2** down to the file tree and one sentence — drop the composition-root preview.
+3. **Segment 1** down to thirty seconds, pointing only at the broker.
+4. **Segment 10**, the three-report list — the tables speak for themselves; keep only 3.6.
 
-**Never cut § 6.** It is 40% of the grade demonstrated live.
+**Never cut segments 11, 12 or 13.** They are the pattern-implementation criterion, demonstrated
+live, and they are worth more than everything before them.
 
 ---
 
 ## Recording notes
 
 - **Don't read the terminal aloud.** The examiner can read. Narrate the *why* while the output
-  is on screen.
-- **Pause the run between acts.** Either `input()` between acts or run each act separately —
-  a wall of scrolling output is unwatchable.
-- **Scroll to a cited line before speaking about it**, not while. Dead air for one second beats
-  narration over a moving screen.
-- **One take per section**, stitched afterwards. Re-recording ten minutes because of one stumble
-  at 8:30 is a bad trade.
+  sits on screen.
+- **Pause between acts.** Either drop an `input()` between them or run each act separately — a
+  wall of scrolling output is unwatchable.
+- **Scroll to a cited line before you start the sentence about it**, not during. One second of
+  dead air beats narration over a moving screen.
+- **One take per segment**, stitched afterwards. Re-recording ten minutes because of a stumble at
+  8:30 is a bad trade.
+- **Say the numbers slowly** when you're citing a line — the examiner may be following along in
+  the source.
